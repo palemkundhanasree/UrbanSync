@@ -3,10 +3,7 @@ import React, { useState, useEffect } from 'react';
 function OfficialDashboard() {
     const [admin, setAdmin] = useState({ name: "Official" });
     // Sample data - eventually this will come from your 'reports' collection
-    const [pendingIssues, setPendingIssues] = useState([
-        { id: 101, type: "Pothole", location: "Main St", status: "Escalating", time: "42h left" },
-        { id: 102, type: "Waste", location: "Park Ave", status: "New", time: "47h left" }
-    ]);
+    const [pendingIssues, setPendingIssues] = useState([]);
 
     useEffect(() => {
         const loggedInUser = JSON.parse(localStorage.getItem('user'));

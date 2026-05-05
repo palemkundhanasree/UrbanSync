@@ -2,6 +2,7 @@ import React from 'react';
 import { useState, useEffect } from 'react';
 import { Link, useNavigate} from "react-router-dom";
 import logo from "../assets/logo.png";
+
 function Navbar() {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const navigate = useNavigate();
@@ -11,7 +12,7 @@ function Navbar() {
             setIsLoggedIn(true);
         } 
     }, []);
-
+    
     const handleLogout = () => {
         localStorage.removeItem("user");
         setIsLoggedIn(false);
