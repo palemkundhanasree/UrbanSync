@@ -1,12 +1,12 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
-import Layout from "./components/layout"; 
-import Herosection from "./components/herosection";
+import Layout from "./components/Layout"; 
+import Herosection from "./components/Herosection";
 import Login from "./components/Login";
 import Signup from "./components/Signup";
-import AboutUs from "./components/aboutus";
-import HowItWorks from "./components/howitswork";
-import CitizenDashboard from "./components/citizenDashbord";
-import OfficialDashbord from "./components/officialDashboard";
+import AboutUs from "./components/Aboutus";
+import HowItWorks from "./components/Howitswork";
+import CitizenDashboard from "./components/CitizenDashbord";
+import OfficialDashbord from "./components/OfficialDashboard";
 
 const router = createBrowserRouter([
   {

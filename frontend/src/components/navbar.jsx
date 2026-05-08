@@ -6,6 +6,7 @@ import logo from "../assets/logo.png";
 function Navbar() {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
     const navigate = useNavigate();
+    
     useEffect(() => {
         const user = localStorage.getItem("user");
         if (user) {

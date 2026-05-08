@@ -25,9 +25,20 @@ function Login() {
             textAlign: "center",
             border: "1px solid rgba(255, 255, 255, 0.1)"
         },
-        title: { fontSize: "2rem", marginBottom: "10px", color: "#baf087" },
-        inputGroup: { marginBottom: "20px", textAlign: "left" },
-        label: { display: "block", marginBottom: "8px", fontSize: "0.9rem" },
+        title: { 
+            fontSize: "2rem",
+            marginBottom: "10px", 
+            color: "#baf087" 
+        },
+        inputGroup: { 
+            marginBottom: "20px", 
+            textAlign: "left" 
+        },
+        label: { 
+            display: "block", 
+            marginBottom: "8px", 
+            fontSize: "0.9rem" 
+        },
         input: {
             width: "100%",
             padding: "12px",
@@ -51,8 +62,16 @@ function Login() {
             cursor: "pointer",
             marginTop: "10px"
         },
-        footerText: { marginTop: "20px", fontSize: "0.9rem", color: "#ccc" },
-        link: { color: "#baf087", textDecoration: "none", fontWeight: "600" }
+        footerText: { 
+            marginTop: "20px", 
+            fontSize: "0.9rem", 
+            color: "#ccc" 
+        },
+        link: { 
+            color: "#baf087", 
+            textDecoration: "none", 
+            fontWeight: "600" 
+        }
     };
 
     const handleLogin = async (e) => {
@@ -108,7 +127,7 @@ function Login() {
                         <input 
                             type="email" 
                             style={styles.input} 
-                            placeholder="name@city.com"
+                            placeholder="name@gmail.com"
                             value={email}
                             onChange={(e) => setEmail(e.target.value)}
                             required 
@@ -135,7 +154,7 @@ function Login() {
                 <p style={styles.footerText}>
                     New to UrbanSync? <Link to="/signup" style={styles.link}>Create Account</Link>
                 </p>
-                <p style={{marginTop: '10px'}}><Link to="/" style={styles.link}>← Back to Home</Link></p>
+                <p style={{marginTop: '10px'}}><Link to="/" style={styles.link}>&larr; Back to Home</Link></p>
             </div>
         </div>
     );

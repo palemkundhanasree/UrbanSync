@@ -68,6 +68,11 @@ function Signup() {
         console.log("Creating account for:", formData);
         // Backend API call
         try{
+            if(formData.password.length <= 8){
+                alert("Password must be at least 8 characters long.");
+                return;
+            }
+
             const response = await fetch('http://localhost:5000/api/auth/signup', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -79,9 +84,8 @@ function Signup() {
                 alert("Account created successfully! Please log in.");
                 window.location.href="/login";
             } else {
-                alert("Error creating account: " + data.message);
+                alert(data.message || "Failed to create account. Please try again.");
             }
-        
         }
         catch (error) {
             console.error("Error creating account:", error);
@@ -107,7 +111,7 @@ function Signup() {
                     <div style={styles.inputGroup}>
                         <label style={styles.label}>Email Address</label>
                         <input 
-                            type="email" name="email" style={styles.input} placeholder="name@city.com"
+                            type="email" name="email" style={styles.input} placeholder="name@gmail.com"
                             onChange={handleChange} required 
                         />
                     </div>
@@ -120,21 +124,13 @@ function Signup() {
                         />
                     </div>
 
-                    <div style={styles.inputGroup}>
-                        <label style={styles.label}>Register As</label>
-                        <select name="role" style={styles.input} onChange={handleChange}>
-                            <option value="citizen">Citizen</option>
-                            <option value="official">Municipality Official</option>
-                        </select>
-                    </div>
-
                     <button type="submit" style={styles.button}>Create Account</button>
                 </form>
 
                 <p style={styles.footerText}>
                     Already have an account? <Link to="/login" style={styles.link}>Log In</Link>
                 </p>
-                <p style={{marginTop: '10px'}}><Link to="/" style={styles.link}>← Back to Home</Link></p>
+                <p style={{marginTop: '10px'}}><Link to="/" style={styles.link}>&larr; Back to Home</Link></p>
             </div>
         </div>
     );
