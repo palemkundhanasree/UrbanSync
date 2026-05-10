@@ -2,7 +2,7 @@ import React ,{ useState, useEffect }from "react";
 import LiveCamera from "./LiveCamera";
 import "./RaiseIssue.css";
 
-function RaiseIssue({ onClose }) {
+function RaiseIssue({ onClose, onReportSubmitted }) {
     const[capturedImage, setCapturedImage] = useState(null);
 
     const [formData, setFormData] = React.useState({

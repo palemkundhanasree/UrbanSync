@@ -11,8 +11,29 @@ function CitizenDashboard() {
         const loggedInUser = JSON.parse(localStorage.getItem("user"));
         if(loggedInUser){
             setUser(loggedInUser);
+            fetchReports(loggedInUser._id);
         }
     }, []);
+        //fetches reports of the logged in user
+         const fetchReports = async (userId) => {
+         try {
+         const response = await fetch(
+            `http://localhost:5000/api/reports/${userId}` );
+         const data = await response.json();
+         setReports(data);
+         }
+         catch(err){
+            console.log("error fetching reports:",err);
+         }
+       };
+       //after form submitted
+      const handleReportSubmitted = () => {
+        setIsFormOpen(false);
+                const loggedInUser = JSON.parse(
+                    localStorage.getItem("user")
+                );
+                fetchReports(loggedInUser._id);
+            };
     const styles = {
         container: {
             display: "flex",
@@ -89,10 +110,58 @@ function CitizenDashboard() {
                 {/* Recent Activity Table Placeholder */}
                 <div style={{ backgroundColor: "rgba(255,255,255,0.03)", padding: "30px", borderRadius: "15px" }}>
                     <h3>Recent Activity</h3>
-                    <p style={{ opacity: 0.5, marginTop: "20px" }}>No reports found. Help your community by reporting an issue!</p>
+                    {
+                        reports.length===0?(
+                            <p style={{ opacity: 0.5, marginTop: "20px" }}>No reports found. Help your community by reporting an issue!</p>
+                        ):(
+                             <table style={{ width: "100%",borderCollapse: "collapse"}}>
+                                    <thead>
+                                        <tr style={{ backgroundColor: "#baf087", color: "#133215"}}>
+                                                <th style={{ padding: "12px" }}> S.No </th>
+                                                <th style={{ padding: "12px" }}> Category</th>
+                                                <th style={{ padding: "12px" }}>Description</th>
+                                                <th style={{padding:"12px"}}>Status</th>
+                                                <th style={{ padding: "12px" }}>Date </th>
+                                         </tr>
+                             </thead>
+                             <tbody>
+                                    {
+                                        Array.isArray(reports) &&
+                                        reports.map((report, index) => (
+                                               <tr key={report._id}
+                                                style={{
+                                                    textAlign: "center",
+                                                    borderBottom: "1px solid #333"
+                                                }}>
+                                                <td style={{ padding: "12px" }}>
+                                                    {index + 1}
+                                                </td>
+                                                <td style={{ padding: "12px" }}>
+                                                    {report.category}
+                                                </td>
+                                                <td style={{ padding: "12px" }}>
+                                                    {report.description}
+                                                </td>
+                                                <td style={{ padding: "12px" }}>
+                                                    {report.status}
+                                                </td>
+                                                <td style={{ padding: "12px" }}>
+                                                    {
+                                                        new Date(
+                                                            report.createdAt
+                                                        ).toLocaleDateString()
+                                                    }
+                                                </td>
+                                            </tr>
+                                        ))}
+                                </tbody>
+                            </table>
+                        )
+                    }
+                   
                 </div>
 
-                {isFormOpen && <RaiseIssue onClose={() => setIsFormOpen(false)} />}
+                {isFormOpen && <RaiseIssue onClose={() => setIsFormOpen(false)} onReportSubmitted={handleReportSubmitted}/>}
             </div>
         </div>
     );
