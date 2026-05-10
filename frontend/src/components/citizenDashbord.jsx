@@ -38,7 +38,7 @@ function CitizenDashboard() {
         container: {
             display: "flex",
             minHeight: "100vh",
-            backgroundColor: "#0d1f0e", // Slightly darker than main green
+            backgroundColor: "#0d1f0e", 
             color: "#f3e8d3",
             fontFamily: "sans-serif"
         },
@@ -85,16 +85,6 @@ function CitizenDashboard() {
 
     return (
         <div style={styles.container}>
-            {/* Sidebar */}
-            <div style={styles.sidebar}>
-                <h2 style={{ color: "#baf087", marginBottom: "30px" }}>UrbanSync</h2>
-                <nav>
-                    <ul style={{ listStyle: "none", padding: 0 }}>
-                        <li style={{ marginBottom: "20px", opacity: 0.7 }}>📊 Dashboard</li>
-                        <li style={{ marginBottom: "20px", opacity: 0.7 }}>📝 My Reports</li>
-                    </ul>
-                </nav>
-            </div>
 
             {/* Main Content */}
             <div style={styles.mainContent}>

@@ -23,7 +23,7 @@ const reportSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User'
     },
-    imageUrl: {
+    image: {
         type: String
     },
 },

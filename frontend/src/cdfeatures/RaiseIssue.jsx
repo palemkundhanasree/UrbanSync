@@ -6,7 +6,7 @@ function RaiseIssue({ onClose, onReportSubmitted }) {
     const[capturedImage, setCapturedImage] = useState(null);
 
     const [formData, setFormData] = React.useState({
-        category: 'pothole',
+        category: 'Pothole',
         description: '',
         address: '',
     });
@@ -18,32 +18,51 @@ function RaiseIssue({ onClose, onReportSubmitted }) {
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        const loggedInUser = JSON.parse(localStorage.getItem('user'));
-        const userId = loggedInUser ? loggedInUser._id : null;
+        if (!capturedImage) {
+          alert('Please capture a photo of the issue before submitting.');
+          return;
+        }
+        
+        const userString = localStorage.getItem("user");
+        if (!userString) {
+          alert("User not logged in. Please log in to submit an issue.");
+          return;
+        }
+        const loggedInUser = JSON.parse(userString);
+        const userId = loggedInUser.id ||loggedInUser._id;
+        if (!userId) {
+          alert("User session invalid. Please log out and log back in.");
+          return;
+        }
 
-        const reportData = {  
-            category: formData.category,
-            description: formData.description,
-            address: formData.address,
-            Image: capturedImage,
-            userId: userId
-        };
+        const  data= new FormData();
+        data.append('category', formData.category);
+        data.append('description', formData.description);
+        data.append('address', formData.address);
+        data.append('userId', userId);
+        try{
+          const res = await fetch(capturedImage);
+          const blob = await res.blob();
+          data.append('image', blob, 'capture.jpg');
+        }
+        catch(error){
+          console.error('image conversion failed:', error);
+        }
 
         try{
           const response =  await fetch('http://localhost:5000/api/reports/add', {
             method: 'POST',
-            headers: {'Content-Type': 'application/json'},
-            body: JSON.stringify(reportData)
-        });
+            body: data
+          });
 
-        const data = await response.json();
+        const result = await response.json();
 
         if(response.ok){
             alert('Issue submitted successfully');
             onClose();
             window.location.reload();
         }else{
-            alert('Failed to submit issue',data.message);
+            alert('Failed to submit issue', result.message);
         }
       } 
       catch (error) {
