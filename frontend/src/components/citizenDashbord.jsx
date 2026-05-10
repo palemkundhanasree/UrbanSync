@@ -1,8 +1,10 @@
 import React,{useState, useEffect} from "react";
+import RaiseIssue from "../cdfeatures/RaiseIssue";
 
 function CitizenDashboard() {
     const [user, setUser] = useState({name:"Citizen"});
     const [reports, setReports] = useState([]);
+    const [isFormOpen, setIsFormOpen] = useState(false);
 
     useEffect(() => {
         //gets user data saved during login
@@ -77,7 +79,9 @@ function CitizenDashboard() {
             <div style={styles.mainContent}>
                 <div style={styles.header}>
                     <h1>Welcome, {user.name}</h1>
-                    <button style={styles.reportButton}>+ File New Report</button>
+                    <button style={styles.reportButton} onClick={() => setIsFormOpen(true)}>
+                        + File New Report
+                    </button>
                 </div>
 
                 {/* Quick Stats */}
@@ -97,6 +101,8 @@ function CitizenDashboard() {
                     <h3>Recent Activity</h3>
                     <p style={{ opacity: 0.5, marginTop: "20px" }}>No reports found. Help your community by reporting an issue!</p>
                 </div>
+
+                {isFormOpen && <RaiseIssue onClose={() => setIsFormOpen(false)} />}
             </div>
         </div>
     );
