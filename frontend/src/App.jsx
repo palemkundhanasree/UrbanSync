@@ -5,7 +5,7 @@ import Login from "./components/Login";
 import Signup from "./components/Signup";
 import AboutUs from "./components/Aboutus";
 import HowItWorks from "./components/Howitswork";
-import CitizenDashboard from "./components/CitizenDashbord";
+import CitizenDashboard from "./components/CitizenDashboard";
 import OfficialDashbord from "./components/OfficialDashboard";
 
 const router = createBrowserRouter([
