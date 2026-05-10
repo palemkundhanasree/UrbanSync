@@ -6,7 +6,7 @@ import "./RaiseIssue.css";
 function RaiseIssue() {
      const navigate = useNavigate();
     const handleSubmit = () => {
-        navigate("/dashboard");
+        navigate("/citizen-dashboard");
     };
   return (
     <div id="container">
