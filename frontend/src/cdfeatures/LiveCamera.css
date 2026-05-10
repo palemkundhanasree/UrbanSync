@@ -1,0 +1,138 @@
+.live-camera {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.camera-btn {
+    background: #baf087;
+    color: #133215;
+    border: none;
+    padding: 14px 22px;
+    border-radius: 12px;
+    font-size: 1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: 0.3s ease;
+}
+
+.Live-camera {
+    width: 100%;
+    max-width: 500px;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(186, 240, 135, 0.2);
+    border-radius: 20px;
+    padding: 20px;
+    box-shadow: 0 10px 35px rgba(0,0,0,0.4);
+}
+
+.video-feed {
+    width: 100%;
+    height: 350px;
+    object-fit: cover;
+    border-radius: 16px;
+    border: 2px solid rgba(186, 240, 135, 0.3);
+    background: #000;
+}
+
+.camera-controls {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 18px;
+}
+
+.capture-btn,
+.cancel-btn,
+.preview-controls,
+.retake-btn {
+    border: none;
+    border-radius: 12px;
+    padding: 12px 20px;
+    cursor: pointer;
+    font-size: 1rem;
+    font-weight: 600;
+    transition: 0.3s ease;
+}
+
+.capture-btn {
+    background: #baf087;
+    color: #133215;
+}
+
+.cancel-btn {
+    background: rgba(255, 80, 80, 0.15);
+    color: #ff7d7d;
+    border: 1px solid rgba(255, 80, 80, 0.3);
+}
+
+.photo-preview {
+    width: 100%;
+    max-width: 500px;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(186, 240, 135, 0.2);
+    border-radius: 20px;
+    padding: 20px;
+    text-align: center;
+}
+
+.photo-preview img {
+    width: 100%;
+    border-radius: 16px;
+    margin-bottom: 18px;
+    border: 2px solid rgba(186, 240, 135, 0.3);
+}
+
+.preview-image{
+    width: 100%;
+    max-height: 300px;
+    object-fit: cover;
+    border-radius: 16px;
+    border: 2px solid rgba(186, 240, 135, 0.3);
+    transition: all 0.4s ease;
+}
+
+.confirmed-image{
+    width: 140px; 
+    height: 140px;
+    object-fit: cover;
+    border-radius: 12px;
+    border: 2px solid #baf087;
+    margin: 10px auto;
+    display: block;
+    transition: all 0.4s ease;
+}
+
+.preview-controls,
+.retake-btn {
+    margin: 8px;
+}
+
+.preview-controls {
+    background: #baf087;
+    color: #133215;
+}
+
+.retake-btn {
+    background: rgba(255,255,255,0.08);
+    color: white;
+    border: 1px solid rgba(255,255,255,0.1);
+}
+
+@media (max-width: 768px) {
+    .video-feed {
+        height: 280px;
+    }
+
+    .camera-controls {
+        flex-direction: column;
+    }
+
+    .capture-btn,
+    .cancel-btn,
+    .preview-controls,
+    .retake-btn {
+        width: 100%;
+    }
+}
