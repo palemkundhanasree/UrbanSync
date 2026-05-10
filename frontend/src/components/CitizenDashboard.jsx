@@ -13,11 +13,12 @@ function CitizenDashboard() {
             setUser(loggedInUser);
         }
     }, []);
+
     const styles = {
         container: {
             display: "flex",
             minHeight: "100vh",
-            backgroundColor: "#0d1f0e", // Slightly darker than main green
+            backgroundColor: "#0d1f0e", 
             color: "#f3e8d3",
             fontFamily: "sans-serif"
         },
@@ -64,16 +65,6 @@ function CitizenDashboard() {
 
     return (
         <div style={styles.container}>
-            {/* Sidebar */}
-            <div style={styles.sidebar}>
-                <h2 style={{ color: "#baf087", marginBottom: "30px" }}>UrbanSync</h2>
-                <nav>
-                    <ul style={{ listStyle: "none", padding: 0 }}>
-                        <li style={{ marginBottom: "20px", opacity: 0.7 }}>📊 Dashboard</li>
-                        <li style={{ marginBottom: "20px", opacity: 0.7 }}>📝 My Reports</li>
-                    </ul>
-                </nav>
-            </div>
 
             {/* Main Content */}
             <div style={styles.mainContent}>
@@ -99,10 +90,12 @@ function CitizenDashboard() {
                 {/* Recent Activity Table Placeholder */}
                 <div style={{ backgroundColor: "rgba(255,255,255,0.03)", padding: "30px", borderRadius: "15px" }}>
                     <h3>Recent Activity</h3>
-                    <p style={{ opacity: 0.5, marginTop: "20px" }}>No reports found. Help your community by reporting an issue!</p>
+                    {
+                        <p style={{ opacity: 0.5, marginTop: "20px" }}>No reports found. Help your community by reporting an issue!</p>
+                    }
                 </div>
 
-                {isFormOpen && <RaiseIssue onClose={() => setIsFormOpen(false)} />}
+                {isFormOpen && <RaiseIssue onClose={() => setIsFormOpen(false)}/>}
             </div>
         </div>
     );
