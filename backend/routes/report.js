@@ -20,7 +20,7 @@ router.post('/add', upload.single('image'), async (req, res) => {
     try {
         console.log('Received data:', req.body);
         console.log('Received file:', req.file);
-        
+
         const { category, description, address, userId } = req.body;
         const newReport = new Report({
             category,
@@ -35,19 +35,6 @@ router.post('/add', upload.single('image'), async (req, res) => {
         console.error('Error submitting report:', error);   
         res.status(500).json({ message: 'Failed to submit report', error: error.message });
     }   
-});
-router.get("/reports/:userId", async (req, res) => {
-    try {
-        const reports = await Report.find({
-            userId: req.params.userId
-        });
-        res.status(200).json(reports);
-    }
-    catch(error){
-        res.status(500).json({
-            message: "Failed to fetch reports"
-        });
-    }
 });
 
 module.exports= router;
