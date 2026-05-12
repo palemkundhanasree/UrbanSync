@@ -15,10 +15,15 @@ function Navbar() {
     }, []);
     
     const handleLogout = () => {
-        localStorage.removeItem("user");
-        setIsLoggedIn(false);
-        alert("Logged out successfully!");
-        navigate("/");
+        const isConfirmed = confirm("Are you sure to logout?");
+
+        if (!isConfirmed){
+            localStorage.removeItem("user");
+            setIsLoggedIn(false); 
+            navigate("/");
+            window.location.reload();
+        }
+        
     }
 
     const styles = {

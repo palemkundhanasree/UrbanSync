@@ -1,4 +1,5 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { ProtectedRoute, PublicRoute } from "./components/ProtectedRoute";
 import Layout from "./components/Layout"; 
 import Herosection from "./components/Herosection";
 import Login from "./components/Login";
@@ -15,15 +16,15 @@ const router = createBrowserRouter([
     children: [
       {
         path: "/", 
-        element: <Herosection />,
+        element: <PublicRoute> <Herosection /> </PublicRoute>,
       },
       {
         path: "/login",
-        element: <Login />,
+        element: <PublicRoute> <Login /> </PublicRoute>,
       },
       {
         path: "/signup",
-        element: <Signup />,
+        element: <PublicRoute> <Signup /> </PublicRoute>,
       },
       {
         path: "/aboutus",
@@ -35,11 +36,11 @@ const router = createBrowserRouter([
       },
       {
         path: "/citizen-dashboard",
-        element: <CitizenDashboard />
+        element: <ProtectedRoute> <CitizenDashboard /> </ProtectedRoute>
       },
       {
         path: "/official-dashboard",
-        element: <OfficialDashbord />
+        element: <ProtectedRoute> <OfficialDashbord /> </ProtectedRoute>
       }
     ]
   }
