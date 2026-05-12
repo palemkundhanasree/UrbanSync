@@ -17,7 +17,7 @@ function Navbar() {
     const handleLogout = () => {
         const isConfirmed = confirm("Are you sure to logout?");
 
-        if (!isConfirmed){
+        if (isConfirmed){
             localStorage.removeItem("user");
             setIsLoggedIn(false); 
             navigate("/");

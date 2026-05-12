@@ -16,7 +16,7 @@ const router = createBrowserRouter([
     children: [
       {
         path: "/", 
-        element: <PublicRoute> <Herosection /> </PublicRoute>,
+        element:  <Herosection /> ,
       },
       {
         path: "/login",
