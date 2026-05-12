@@ -1,9 +1,9 @@
 import React,{useState, useEffect} from "react";
 import RaiseIssue from "../cdfeatures/RaiseIssue";
+import IssueList from "../cdfeatures/IssueList";
 
 function CitizenDashboard() {
     const [user, setUser] = useState({name:"Citizen"});
-    const [reports, setReports] = useState([]);
     const [isFormOpen, setIsFormOpen] = useState(false);
 
     useEffect(() => {
@@ -90,9 +90,7 @@ function CitizenDashboard() {
                 {/* Recent Activity Table Placeholder */}
                 <div style={{ backgroundColor: "rgba(255,255,255,0.03)", padding: "30px", borderRadius: "15px" }}>
                     <h3>Recent Activity</h3>
-                    {
-                        <p style={{ opacity: 0.5, marginTop: "20px" }}>No reports found. Help your community by reporting an issue!</p>
-                    }
+                    <IssueList />
                 </div>
 
                 {isFormOpen && <RaiseIssue onClose={() => setIsFormOpen(false)}/>}
