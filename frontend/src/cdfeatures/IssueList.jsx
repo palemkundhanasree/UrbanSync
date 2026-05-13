@@ -1,14 +1,14 @@
 import React, { useEffect, useState } from "react";
 import "./IssueList.css";
 
-const IssueList = () => {
+const IssueList = ({ setActiveCount, setResolvedCount, refreshTrigger }) => {
     const [reports, setReports] = useState([]);
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
         const fetchReports = async () => {
             const loggedInUser = JSON.parse(localStorage.getItem("user"));
-            const userId = loggedInUser?.id || loggedInUser?.id ;
+            const userId = loggedInUser?._id || loggedInUser?.id ;
 
             if (!userId) {
                 console.error("User ID not found in localStorage.");
@@ -19,7 +19,17 @@ const IssueList = () => {
                 const response = await fetch(`http://localhost:5000/api/reports/user/${userId}`);
                 const data = await response.json();
                 if (response.ok) {
-                    setReports(data);
+                    const reportsArray = Array.isArray(data)? data : [];
+                    setReports(reportsArray);
+                    const activeReports=reportsArray.filter((report) => {
+                    const status = report.status?.toLowerCase();
+                    return status === "pending" || status === "in progress";
+                  }).length;
+                    setActiveCount(activeReports);
+                   const resolvedReports = reportsArray.filter((report) => {
+                  return report.status?.toLowerCase() === "resolved";
+                }).length;
+                setResolvedCount(resolvedReports);
                 } else {
                     console.error("Failed to fetch reports:", data.message);
                 }
@@ -31,7 +41,7 @@ const IssueList = () => {
         };
 
         fetchReports();
-    }, []);
+    }, [refreshTrigger]);
 
     if (loading) {
         return <div><p className="loading-text">Loading...</p></div>;
@@ -43,7 +53,7 @@ const IssueList = () => {
                 <p className="empty-text">No reports found. Help your community by reporting issues!</p>
             ) : (
                 reports.map((report) => (
-                    <div key={report.id} className="issue-card">
+                    <div key={report._id} className="issue-card">
                         {report.image && (
                             <div className="issue-img-container">
                                 <img
@@ -56,7 +66,7 @@ const IssueList = () => {
                         <div className="issue-info">
                             <div className="issue-header">
                                 <h4 className="issue-title">{report.category}</h4>
-                                <span className={`status-badge status-${report.status.toLowerCase()}`}>
+                                <span className={`status-badge status-${report.status?.toLowerCase()}`}>
                                     {report.status}
                                 </span>
                             </div>

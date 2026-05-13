@@ -17,7 +17,6 @@ function RaiseIssue({ onClose, onReportSubmitted }) {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
         if (!capturedImage) {
           alert('Please capture a photo of the issue before submitting.');
           return;
@@ -59,8 +58,8 @@ function RaiseIssue({ onClose, onReportSubmitted }) {
 
         if(response.ok){
             alert('Issue submitted successfully');
+               onReportSubmitted();
             onClose();
-            window.location.reload();
         }else{
             alert('Failed to submit issue', result.message);
         }
