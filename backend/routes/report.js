@@ -1,19 +1,20 @@
 const express = require('express');
 const router = express.Router();
 const multer = require('multer');
-const path = require('path');
+const {CloudinaryStorage} = require('multer-storage-cloudinary');
+const cloudinary = require('../config/cloudinary');
 const Report = require('../models/ReportSchema');
 
-const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-        cb(null, 'uploaded_images/');
+
+const storage = new CloudinaryStorage({
+    cloudinary: cloudinary,
+    params: {
+        folder: 'reports',
+        allowedFormats: ['jpg', 'png', 'gif']
     },
-    filename: (req, file, cb) => {
-        cb(null, Date.now() + path.extname(file.originalname));
-    }
 });
 
-const upload = multer({ storage: storage });
+const upload = multer({ storage});
 
 router.post('/add', upload.single('image'), async (req, res) => {
     console.log('API HIT');
