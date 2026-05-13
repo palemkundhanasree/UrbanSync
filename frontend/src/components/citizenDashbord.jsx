@@ -74,7 +74,7 @@ function CitizenDashboard() {
                 <div style={styles.header}>
                     <h1>Welcome, {user.name}</h1>
                     <button style={styles.reportButton} onClick={() => setIsFormOpen(true)}>
-                        + File New Report
+                        + File New Issue
                     </button>
                 </div>
 
@@ -84,13 +84,13 @@ function CitizenDashboard() {
                         <h3 style={{ color: "#baf087" }}>
                             {activeCount}
                         </h3>
-                        <p>Active Reports</p>
+                        <p>Active Issues</p>
                     </div>
                     <div style={styles.statCard}>
                         <h3 style={{ color: "#baf087" }}>
                             {resolvedCount}
                         </h3>
-                        <p>Resolved</p>
+                        <p>Resolved Issues</p>
                     </div>
                 </div>
 
@@ -101,11 +101,8 @@ function CitizenDashboard() {
     <IssueList
         setActiveCount={setActiveCount}
         setResolvedCount={setResolvedCount}
-        refreshTrigger={refreshTrigger}
-    />
-
+        refreshTrigger={refreshTrigger} />
 </div>
-
                 {isFormOpen && <RaiseIssue onClose={() => setIsFormOpen(false)}
                     onReportSubmitted={() => {setRefreshTrigger(prev => !prev);}}
                 />}

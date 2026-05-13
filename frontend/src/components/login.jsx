@@ -147,7 +147,7 @@ function Login() {
                     </div>
 
                     <button type="submit" style={styles.button} onClick={handleLogin}>
-                        Sign In
+                        LogIn
                     </button>
                 </form>
 
