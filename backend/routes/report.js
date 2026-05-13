@@ -21,11 +21,13 @@ router.post('/add', upload.single('image'), async (req, res) => {
         console.log('Received data:', req.body);
         console.log('Received file:', req.file);
 
-        const { category, description, address, userId } = req.body;
+        const { category, description, address, userId, latitude, longitude} = req.body;
         const newReport = new Report({
             category,
             description,
             address,
+            latitude,
+            longitude,
             userId,
             status: 'Pending',
             image: req.file ? req.file.path : null

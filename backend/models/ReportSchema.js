@@ -14,6 +14,14 @@ const reportSchema = new mongoose.Schema({
         type: String,
         required: true
     },
+    latitude: {
+        type:Number,
+        required:true
+    },
+    longitude:{
+        type:Number,
+        required:true
+    },
     status: {
         type: String,
         default: 'Pending',
