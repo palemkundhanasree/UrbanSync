@@ -16,8 +16,8 @@ const reportSchema = new mongoose.Schema({
     },
     status: {
         type: String,
-        default: 'pending',
-        enum: ['pending', 'in progress','Escalated', 'resolved']
+        default: 'Pending',
+        enum: ['Pending', 'In-Progress', 'Escalated', 'Resolved']
     },
     userId: {
         type: mongoose.Schema.Types.ObjectId,
