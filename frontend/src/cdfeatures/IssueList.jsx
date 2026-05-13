@@ -50,7 +50,7 @@ const IssueList = ({ setActiveCount, setResolvedCount, refreshTrigger }) => {
     return (
         <div className="issue-container">
             {reports.length === 0 ? (
-                <p className="empty-text">No reports found. Help your community by reporting issues!</p>
+                <p className="empty-text">No Issues found. Help your community by reporting issues!</p>
             ) : (
                 reports.map((report) => (
                     <div key={report._id} className="issue-card">
