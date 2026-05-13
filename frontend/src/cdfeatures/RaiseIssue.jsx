@@ -1,10 +1,73 @@
 import React ,{ useState, useEffect }from "react";
 import LiveCamera from "./LiveCamera";
 import "./RaiseIssue.css";
+import IssueMap from "../cdfeatures/IssueMap";
+import {MapContainer,TileLayer,Marker,useMapEvents} from "react-leaflet";
+import L from "leaflet";
+import "leaflet/dist/leaflet.css";
 
+delete L.Icon.Default.prototype._getIconUrl;
+L.Icon.Default.mergeOptions({
+  iconRetinaUrl:
+    "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon-2x.png",
+
+  iconUrl:
+    "https://unpkg.com/leaflet@1.9.4/dist/images/marker-icon.png",
+
+  shadowUrl:
+    "https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png",
+});
+//clickable map component
+function LocationMarker({
+  coordinates,
+  setCoordinates,
+  setFormData
+}) {
+
+  useMapEvents({
+
+    click: async (e) => {
+
+      const lat = e.latlng.lat;
+      const lng = e.latlng.lng;
+
+      setCoordinates({
+        latitude: lat,
+        longitude: lng
+      });
+
+      try {
+
+        const response = await fetch(
+          `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`
+        );
+
+        const data = await response.json();
+
+        setFormData((prev) => ({
+          ...prev,
+          address: data.display_name || ""
+        }));
+
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  });
+
+  return coordinates.latitude ? (
+    <Marker
+      position={[
+        coordinates.latitude,
+        coordinates.longitude
+      ]}
+    />
+  ) : null;
+}
 function RaiseIssue({ onClose, onReportSubmitted }) {
     const[capturedImage, setCapturedImage] = useState(null);
     const[loadingLocation, setLoadingLocation]=useState(false);
+     const [reports, setReports] = useState([]);
     const[coordinates,setCoordinates]=useState({
         latitude:"",
         longitude:""
@@ -168,8 +231,30 @@ const getCurrentLocation = () => {
              borderRadius: "8px", border: "none", backgroundColor: "#baf087",cursor: "pointer",fontWeight: "bold" }}>
             {loadingLocation ? "Fetching Location..." : "Use Current Location"}
             </button>
+            <div className="input-group">
+            <label>Select Issue Location</label>
+            <MapContainer
+              center={[17.0005, 81.8040]}
+              zoom={13}
+              style={{
+                height: "300px",
+                width: "100%",
+                borderRadius: "12px"
+              }} >
+            <TileLayer
+              attribution='&copy; OpenStreetMap contributors'
+              url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+            />
+            <LocationMarker
+              coordinates={coordinates}
+              setCoordinates={setCoordinates}
+              setFormData={setFormData}
+            />
+          </MapContainer>
+</div>
             <textarea name="address" className="input textarea" placeholder="Enter landmarks or exact address" required
              value={formData.address}onChange={handleChange} ></textarea>
+                 
           </div>
 
           <div>

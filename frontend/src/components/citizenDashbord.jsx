@@ -2,12 +2,14 @@ import React,{useState, useEffect} from "react";
 import RaiseIssue from "../cdfeatures/RaiseIssue";
 import IssueList from "../cdfeatures/IssueList";
 
+
 function CitizenDashboard() {
     const [user, setUser] = useState({name:"Citizen"});
     const [isFormOpen, setIsFormOpen] = useState(false);
     const [activeCount, setActiveCount] = useState(0);
     const [resolvedCount, setResolvedCount] = useState(0);
     const [refreshTrigger, setRefreshTrigger] = useState(false);
+   
 
     useEffect(() => {
         //gets user data saved during login
@@ -102,6 +104,7 @@ function CitizenDashboard() {
         setActiveCount={setActiveCount}
         setResolvedCount={setResolvedCount}
         refreshTrigger={refreshTrigger} />
+    
 </div>
                 {isFormOpen && <RaiseIssue onClose={() => setIsFormOpen(false)}
                     onReportSubmitted={() => {setRefreshTrigger(prev => !prev);}}

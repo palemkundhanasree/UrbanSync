@@ -57,7 +57,7 @@ const IssueList = ({ setActiveCount, setResolvedCount, refreshTrigger }) => {
                         {report.image && (
                             <div className="issue-img-container">
                                 <img
-                                    src={`http://localhost:5000/${report.image.replace(/\\/g, "/")}`}
+                                    src={report.image}
                                     alt="Evidence"
                                     className="issue-img"
                                 />
