@@ -27,6 +27,7 @@ router.post('/add', upload.single('image'), async (req, res) => {
             description,
             address,
             userId,
+            status: 'Pending',
             image: req.file ? req.file.path : null
         });
         await newReport.save();
