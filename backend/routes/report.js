@@ -1,31 +1,35 @@
 const express = require('express');
 const router = express.Router();
 const multer = require('multer');
-const path = require('path');
+const {CloudinaryStorage} = require('multer-storage-cloudinary');
+const cloudinary = require('../config/cloudinary');
 const Report = require('../models/ReportSchema');
 
-const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-        cb(null, 'uploaded_images/');
+
+const storage = new CloudinaryStorage({
+    cloudinary: cloudinary,
+    params: {
+        folder: 'reports',
+        allowedFormats: ['jpg', 'png', 'gif']
     },
-    filename: (req, file, cb) => {
-        cb(null, Date.now() + path.extname(file.originalname));
-    }
 });
 
-const upload = multer({ storage: storage });
+const upload = multer({ storage});
 
 router.post('/add', upload.single('image'), async (req, res) => {
     try {
         console.log('Received data:', req.body);
         console.log('Received file:', req.file);
 
-        const { category, description, address, userId } = req.body;
+        const { category, description, address, userId, latitude, longitude} = req.body;
         const newReport = new Report({
             category,
             description,
             address,
+            latitude,
+            longitude,
             userId,
+            status: 'Pending',
             image: req.file ? req.file.path : null
         });
         await newReport.save();

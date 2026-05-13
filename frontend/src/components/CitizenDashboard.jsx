@@ -5,6 +5,9 @@ import IssueList from "../cdfeatures/IssueList";
 function CitizenDashboard() {
     const [user, setUser] = useState({name:"Citizen"});
     const [isFormOpen, setIsFormOpen] = useState(false);
+    const [activeCount, setActiveCount] = useState(0);
+    const [resolvedCount, setResolvedCount] = useState(0);
+    const [refreshTrigger, setRefreshTrigger] = useState(false);
 
     useEffect(() => {
         //gets user data saved during login
@@ -71,29 +74,39 @@ function CitizenDashboard() {
                 <div style={styles.header}>
                     <h1>Welcome, {user.name}</h1>
                     <button style={styles.reportButton} onClick={() => setIsFormOpen(true)}>
-                        + File New Report
+                        + File New Issue
                     </button>
                 </div>
 
                 {/* Quick Stats */}
                 <div style={styles.statsGrid}>
                     <div style={styles.statCard}>
-                        <h3 style={{ color: "#baf087" }}>0</h3>
-                        <p>Active Reports</p>
+                        <h3 style={{ color: "#baf087" }}>
+                            {activeCount}
+                        </h3>
+                        <p>Active Issues</p>
                     </div>
                     <div style={styles.statCard}>
-                        <h3 style={{ color: "#baf087" }}>0</h3>
-                        <p>Resolved</p>
+                        <h3 style={{ color: "#baf087" }}>
+                            {resolvedCount}
+                        </h3>
+                        <p>Resolved Issues</p>
                     </div>
                 </div>
 
                 {/* Recent Activity Table Placeholder */}
                 <div style={{ backgroundColor: "rgba(255,255,255,0.03)", padding: "30px", borderRadius: "15px" }}>
-                    <h3>Recent Activity</h3>
-                    <IssueList />
-                </div>
+    <h3>Recent Activity</h3>
 
-                {isFormOpen && <RaiseIssue onClose={() => setIsFormOpen(false)}/>}
+    <IssueList
+        setActiveCount={setActiveCount}
+        setResolvedCount={setResolvedCount}
+        refreshTrigger={refreshTrigger} />
+</div>
+                {isFormOpen && <RaiseIssue onClose={() => setIsFormOpen(false)}
+                    onReportSubmitted={() => {setRefreshTrigger(prev => !prev);}}
+                />}
+
             </div>
         </div>
     );

@@ -4,6 +4,11 @@ import "./RaiseIssue.css";
 
 function RaiseIssue({ onClose, onReportSubmitted }) {
     const[capturedImage, setCapturedImage] = useState(null);
+    const[loadingLocation, setLoadingLocation]=useState(false);
+    const[coordinates,setCoordinates]=useState({
+        latitude:"",
+        longitude:""
+    });
 
     const [formData, setFormData] = React.useState({
         category: 'Pothole',
@@ -11,13 +16,50 @@ function RaiseIssue({ onClose, onReportSubmitted }) {
         address: '',
     });
 
+// Function to get user's current location 
+const getCurrentLocation = () => {
+    if (!navigator.geolocation) {
+        alert("Geolocation is not supported by your browser");
+        return;
+    }
+    setLoadingLocation(true);
+    navigator.geolocation.getCurrentPosition(
+        async (position) => {
+            const lat = position.coords.latitude;
+            const lng = position.coords.longitude;
+            setCoordinates({
+                latitude: lat,
+                longitude: lng
+            });
+            try {
+                // Reverse Geocoding API
+                const response = await fetch(
+                    `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`
+                );
+                const data = await response.json();
+                setFormData((prev) => ({
+                    ...prev,
+                    address: data.display_name || ""
+                }));
+            } catch (error) {
+                console.log("Error fetching address:", error);
+            }
+            setLoadingLocation(false);
+        },
+        (error) => {
+            console.log(error);
+            alert("Unable to fetch location");
+            setLoadingLocation(false);
+        }
+    );
+};
+
     const handleChange = (e) => {
         setFormData({...formData, [e.target.name]: e.target.value});
     };
-
+ 
     const handleSubmit = async (e) => {
         e.preventDefault();
-
         if (!capturedImage) {
           alert('Please capture a photo of the issue before submitting.');
           return;
@@ -40,6 +82,8 @@ function RaiseIssue({ onClose, onReportSubmitted }) {
         data.append('description', formData.description);
         data.append('address', formData.address);
         data.append('userId', userId);
+        data.append('latitude', coordinates.latitude);
+        data.append('longitude', coordinates.longitude);
         try{
           const res = await fetch(capturedImage);
           const blob = await res.blob();
@@ -56,11 +100,10 @@ function RaiseIssue({ onClose, onReportSubmitted }) {
           });
 
         const result = await response.json();
-
         if(response.ok){
             alert('Issue submitted successfully');
+            onReportSubmitted();
             onClose();
-            window.location.reload();
         }else{
             alert('Failed to submit issue', result.message);
         }
@@ -121,13 +164,12 @@ function RaiseIssue({ onClose, onReportSubmitted }) {
 
           <div className="input-group">
             <label>Address</label>
-            <textarea
-              name="address"
-              className="input textarea"
-              placeholder="Enter landmarks or exact address"
-              required
-              onChange={handleChange}
-            ></textarea>
+            <button type="button" onClick={getCurrentLocation} style={{ marginBottom: "10px", padding: "8px 14px",
+             borderRadius: "8px", border: "none", backgroundColor: "#baf087",cursor: "pointer",fontWeight: "bold" }}>
+            {loadingLocation ? "Fetching Location..." : "Use Current Location"}
+            </button>
+            <textarea name="address" className="input textarea" placeholder="Enter landmarks or exact address" required
+             value={formData.address}onChange={handleChange} ></textarea>
           </div>
 
           <div>
