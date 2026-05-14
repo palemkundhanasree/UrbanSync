@@ -1,74 +1,60 @@
-import React, { useState, useEffect } from 'react';
-import OfficialDashboardFeatures from './officialDashboardfeatures';
+import React, { useState } from 'react';
+import CountingSystem from './OfficialDashboardFeatures/CountingSystem';
+import FilteringSystem from './OfficialDashboardFeatures/FilteringSystem';
+import AdminFeed from './OfficialDashboardFeatures/AdminFeed';
 
-function OfficialDashboard() {
-    const [admin, setAdmin] = useState({ name: "Official" });
-    // This state tracks which tab the user has clicked in the sidebar
-    const [view, setView] = useState('incoming');
-
-    const [pendingIssues, setPendingIssues] = useState([
-        { id: 101, type: "Pothole", location: "Main St", status: "Pending", priority: "High", proofImg: "https://via.placeholder.com/100" },
-        { id: 102, type: "Street Light", location: "2nd Ave", status: "In Progress", priority: "Normal", proofImg: "" }
+const OfficialDashboard = () => {
+    const [reports, setReports] = useState([
+        { id: 1, type: "Pothole", location: "Sector 4", status: "Pending", description: "Deep pothole on main curve" },
+        { id: 2, type: "Drainage", location: "Main Road", status: "In Progress", description: "Clogged drainage pipe" },
     ]);
 
-    useEffect(() => {
-        const loggedInUser = JSON.parse(localStorage.getItem('user'));
-        if (loggedInUser) setAdmin(loggedInUser);
-    }, []);
+    const [issueFilter, setIssueFilter] = useState('All');
+    const [statusFilter, setStatusFilter] = useState('All');
 
-    const handleStatusUpdate = (id, newStatus) => {
-        setPendingIssues(prev =>
-            prev.map(issue => issue.id === id ? { ...issue, status: newStatus } : issue)
-        );
+    const handleUpdate = (id, newStatus) => {
+        setReports(prev => prev.map(r => r.id === id ? { ...r, status: newStatus } : r));
     };
 
-    const styles = {
-        container: { display: "flex", minHeight: "100vh", backgroundColor: "#131313", color: "#f3e8d3", fontFamily: "sans-serif" },
-        sidebar: { width: "260px", backgroundColor: "#1c1c1c", padding: "40px 20px", borderRight: "1px solid #333" },
-        main: { flex: 1, padding: "40px" },
-        navItem: (isActive) => ({
-            color: isActive ? "#baf087" : "#fff",
-            fontWeight: isActive ? "bold" : "normal",
-            cursor: "pointer",
-            opacity: isActive ? 1 : 0.6,
-            marginBottom: "20px"
-        })
+    const stats = {
+        today: 5,
+        pending: reports.filter(r => r.status === "Pending").length,
+        inProgress: reports.filter(r => r.status === "In Progress").length,
+        resolved: reports.filter(r => r.status === "Resolved").length
     };
+
+    const filteredReports = reports.filter(r =>
+        (issueFilter === 'All' || r.type === issueFilter) &&
+        (statusFilter === 'All' || r.status === statusFilter)
+    );
 
     return (
-        <div style={styles.container}>
-            <div style={styles.sidebar}>
-                <h2 style={{ color: "#baf087" }}>UrbanSync Admin</h2>
-                <nav style={{ marginTop: "40px" }}>
-                    <p
-                        style={styles.navItem(view === 'incoming')}
-                        onClick={() => setView('incoming')}
-                    >
-                        📥 Incoming Tasks
-                    </p>
-                    <p
-                        style={styles.navItem(view === 'resolved')}
-                        onClick={() => setView('resolved')}
-                    >
-                        ✅ Resolved Issues
-                    </p>
-                </nav>
-            </div>
+        <div style={{ padding: "40px", backgroundColor: "#131313", minHeight: "100vh", color: "#f3e8d3", fontFamily: "sans-serif" }}>
+            <header style={{ marginBottom: "40px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                <div>
+                    <h2 style={{ color: "#baf087", margin: 0 }}>Welcome to UrbanSync!</h2>
+                    <h1 style={{ margin: "10px 0" }}>Official Panel: <span style={{ borderBottom: "2px solid #baf087" }}>Admin</span></h1>
+                    <h3 style={{ opacity: 0.8 }}>Department of Municipal Works</h3>
+                </div>
 
-            <div style={styles.main}>
-                <header style={{ marginBottom: "40px" }}>
-                    <h1>Official Panel: {admin.name}</h1>
-                    <p style={{ opacity: 0.7 }}>View: {view === 'incoming' ? 'Incoming Tasks' : 'Resolved Archive'}</p>
-                </header>
+                {/* Updated: Increased size and themed color */}
+                <div style={{ textAlign: "right" }}>
+                    <p style={{ color: "#baf087", margin: 0, fontWeight: "bold", fontSize: "1.2rem" }}>Issues reported today</p>
+                    <h2 style={{ margin: "5px 0 0 0", color: "#fff", fontSize: "3.5rem", fontWeight: "bold", lineHeight: "1" }}>{stats.today}</h2>
+                </div>
+            </header>
 
-                <OfficialDashboardFeatures
-                    reports={pendingIssues}
-                    onUpdateStatus={handleStatusUpdate}
-                    currentView={view}
-                />
-            </div>
+            <CountingSystem stats={stats} />
+
+            <h2 style={{ marginBottom: "20px" }}>Reported Issues</h2>
+            <FilteringSystem
+                issueFilter={issueFilter} setIssueFilter={setIssueFilter}
+                statusFilter={statusFilter} setStatusFilter={setStatusFilter}
+            />
+
+            <AdminFeed reports={filteredReports} onStatusChange={handleUpdate} />
         </div>
     );
-}
+};
 
 export default OfficialDashboard;
