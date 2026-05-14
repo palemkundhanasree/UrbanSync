@@ -3,22 +3,28 @@ import React from 'react';
 const StatusUpdater = ({ currentStatus, onUpdate }) => {
     return (
         <select
-            value={currentStatus}
-            onChange={(e) => onUpdate(e.target.value)}
+            value="label"
+            onChange={(e) => {
+                if (e.target.value !== "label") onUpdate(e.target.value);
+            }}
             style={{
-                backgroundColor: "#252525",
-                color: "#baf087",
-                padding: "8px 12px",
-                borderRadius: "6px",
-                border: "1px solid #444",
+                backgroundColor: "#baf087",
+                color: "#000",
+                padding: "8px 16px",
+                borderRadius: "8px",
+                border: "none",
                 fontWeight: "bold",
-                cursor: "pointer"
+                cursor: "pointer",
+                fontSize: "0.75rem",
+                appearance: "none",
+                textAlign: "center",
+                width: "140px"
             }}
         >
-            <option value="Pending">Pending</option>
-            <option value="In Progress">In Progress</option>
-            <option value="Resolved">Resolved</option>
-            <option value="Escalated">Escalated</option>
+            <option value="label">UPDATE STATUS</option>
+            <option value="Pending">Pending {currentStatus === "Pending" ? "✓" : ""}</option>
+            <option value="In Progress">In Progress {currentStatus === "In Progress" ? "✓" : ""}</option>
+            <option value="Resolved">Resolved {currentStatus === "Resolved" ? "✓" : ""}</option>
         </select>
     );
 };

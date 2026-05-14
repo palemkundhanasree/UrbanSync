@@ -30,7 +30,6 @@ const FilteringSystem = ({ issueFilter, setIssueFilter, statusFilter, setStatusF
                 <option value="Pending">Pending</option>
                 <option value="In Progress">In Progress</option>
                 <option value="Resolved">Resolved</option>
-                <option value="Escalated">Escalated</option>
             </select>
         </div>
     );
