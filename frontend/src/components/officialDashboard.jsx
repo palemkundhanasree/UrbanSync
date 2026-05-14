@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
-import CountingSystem from './OfficialDashboardFeatures/CountingSystem';
-import FilteringSystem from './OfficialDashboardFeatures/FilteringSystem';
-import AdminFeed from './OfficialDashboardFeatures/AdminFeed';
+import CountingSystem from '../OfficialDashboardFeatures/CountingSystem';
+import FilteringSystem from '../OfficialDashboardFeatures/FilteringSystem';
+import AdminFeed from '../OfficialDashboardFeatures/AdminFeed';
 
 const OfficialDashboard = () => {
     const [reports, setReports] = useState([
