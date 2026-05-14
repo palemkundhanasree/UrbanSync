@@ -1,11 +1,5 @@
 import React from "react";
-
-import {
-    MapContainer,
-    TileLayer,
-    Marker,
-    Popup
-} from "react-leaflet";
+import {MapContainer,TileLayer,Marker, Popup,useMap} from "react-leaflet";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 delete L.Icon.Default.prototype._getIconUrl;
@@ -23,47 +17,43 @@ L.Icon.Default.mergeOptions({
 function IssueMap({ reports }) {
     return (
         <MapContainer
-            center={[17.0005, 81.8040]}
-            zoom={13}
-            style={{
-                height: "500px",
-                width: "100%",
-                borderRadius: "12px"
-            }}
-        >
-            <TileLayer
-                attribution='&copy; OpenStreetMap contributors'
-                url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-            />
-            {
-                reports.map((report) => (
+    center={[17.0005, 81.8040]}
+    zoom={13}
+    style={{
+        height: "300px",
+        width: "100%",
+        borderRadius: "12px",
+        marginBottom: "20px"
+    }}
+>
 
-                    report.latitude &&
-                    report.longitude && (
+    <TileLayer
+        attribution='&copy; OpenStreetMap contributors'
+        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
+    />
 
-                        <Marker
-                            key={report._id}
-                            position={[
-                                report.latitude,
-                                report.longitude
-                            ]}
-                        >
-                            <Popup>
+    <AutoZoomToLocation coordinates={coordinates} />
 
-                                <h3>{report.category}</h3>
+    {
+        coordinates.latitude &&
+        coordinates.longitude && (
 
-                                <p>{report.description}</p>
+            <Marker
+                position={[
+                    coordinates.latitude,
+                    coordinates.longitude
+                ]}
+            >
 
-                                <p>Status: {report.status}</p>
+                <Popup>
+                    Current Location
+                </Popup>
 
-                                <p>{report.address}</p>
+            </Marker>
+        )
+    }
 
-                            </Popup>
-                        </Marker>
-                    )
-                ))
-            }
-        </MapContainer>
+</MapContainer>
     );
 }
 

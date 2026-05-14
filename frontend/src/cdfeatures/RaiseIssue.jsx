@@ -64,13 +64,41 @@ function LocationMarker({
     />
   ) : null;
 }
+function AutoZoomToLocation({ coordinates }) {
+
+    const map = useMap();
+
+    useEffect(() => {
+
+        if (
+            coordinates.latitude &&
+            coordinates.longitude
+        ) {
+
+            map.flyTo(
+                [
+                    coordinates.latitude,
+                    coordinates.longitude
+                ],
+                18,
+                {
+                    duration: 2
+                }
+            );
+
+        }
+
+    }, [coordinates, map]);
+
+    return null;
+}
 function RaiseIssue({ onClose, onReportSubmitted }) {
     const[capturedImage, setCapturedImage] = useState(null);
     const[loadingLocation, setLoadingLocation]=useState(false);
      const [reports, setReports] = useState([]);
     const[coordinates,setCoordinates]=useState({
-        latitude:"",
-        longitude:""
+        latitude:null,
+        longitude:null
     });
 
     const [formData, setFormData] = React.useState({
