@@ -39,7 +39,6 @@ const OfficialDashboard = () => {
                 })
             });
             if (response.ok) {
-                setReports(prev => prev.map(r => r._id === id ? { ...r, status: newStatus, resolvedImage: resolvedImage } : r));
                 alert('Report status updated successfully!');
                 window.location.reload(); 
             }

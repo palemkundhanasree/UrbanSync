@@ -45,17 +45,6 @@ const StatusUpdater = ({ currentStatus, onUpdate }) => {
             }
         };
 
-        const handleFileChange = async (e) => {
-            const file = e.target.files[0];
-            if (file) {
-                const imageUrl = await handleUploadToCloudinary(file);
-                if (imageUrl)
-                    onUpdate("Resolved", imageUrl);
-                else                
-                    alert("Failed to upload resolved image. Please try again.");
-            }
-        };
-
         const handleCapture = async (capturedData) => {
             setShowCamera(false);
             const imageUrl = await handleUploadToCloudinary(capturedData);
@@ -100,7 +89,7 @@ const StatusUpdater = ({ currentStatus, onUpdate }) => {
                     width: "140px"
                 }}
             >
-                <option value="label">UPDATE STATUS</option>
+                <option value="label">{isUploading ? "UPLOADING..." : "UPDATE STATUS"}</option>
                 <option value="Pending">Pending {currentStatus === "Pending" ? "✓" : ""}</option>
                 <option value="In-Progress">In-Progress {currentStatus === "In-Progress" ? "✓" : ""}</option>
                 <option value="Resolved">Resolved {currentStatus === "Resolved" ? "✓" : ""}</option>
