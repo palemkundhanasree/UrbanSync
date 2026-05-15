@@ -63,4 +63,28 @@ router.get('/all', async (req, res) => {
     }
 });
 
-module.exports= router;
+router.put('/update-status/:id', async (req, res) => {
+    try {
+        const { status } = req.body;
+        const reportId = req.params.id;
+
+        const allowedStatuses = ['Pending', 'In Progress', 'Resolved'];
+        if (!allowedStatuses.includes(status)) {
+            return res.status(400).json({ message: 'Invalid status value' });
+        }
+
+        if (!updatedReport) {
+            return res.status(404).json({ message: 'Report not found' });
+        }
+
+        res.status(200).json({
+            message: 'Report status updated successfully',
+            report: updatedReport 
+    });
+    } catch (error) {
+        console.error('Error updating report status:', error);
+        res.status(500).json({ message: 'Failed to update report status', error: error.message });
+    }
+});
+
+module.exports = router;

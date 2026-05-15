@@ -1,108 +1,86 @@
 import React, { useState, useEffect } from 'react';
+import CountingSystem from '../OfficialDashboardFeatures/CountingSystem';
+import FilteringSystem from '../OfficialDashboardFeatures/FilteringSystem';
+import AdminFeed from '../OfficialDashboardFeatures/AdminFeed';
 
-function OfficialDashboard() {
-    const [admin, setAdmin] = useState({ name: "Official" });
-    // Sample data - eventually this will come from your 'reports' collection
-    const [pendingIssues, setPendingIssues] = useState([]);
+const OfficialDashboard = () => {
+   
+    const [reports, setReports] = useState([]);
+    const [issueFilter, setIssueFilter] = useState('All');
+    const [statusFilter, setStatusFilter] = useState('All');
 
     useEffect(() => {
-        const loggedInUser = JSON.parse(localStorage.getItem('user'));
-        if (loggedInUser) setAdmin(loggedInUser);
+        const fetchReports = async () => {
+            try {
+                const response = await fetch('http://localhost:5000/api/reports/all');
+                const data = await response.json();
+                if (response.ok) {
+                    setReports(data);
+                }
+            } catch (error) {
+                console.error('Error fetching reports:', error);
+            }
+        };
+
+        fetchReports();
     }, []);
 
-    const styles = {
-        container: {
-            display: "flex",
-            minHeight: "100vh",
-            backgroundColor: "#131313", 
-            color: "#f3e8d3",
-            fontFamily: "sans-serif"
-        },
-        sidebar: {
-            width: "260px",
-            backgroundColor: "#1c1c1c",
-            padding: "40px 20px",
-            borderRight: "1px solid #333"
-        },
-        main: {
-            flex: 1,
-            padding: "40px"
-        },
-        card: {
-            backgroundColor: "#252525",
-            padding: "20px",
-            borderRadius: "10px",
-            marginBottom: "20px",
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            borderLeft: "5px solid #baf087"
-        },
-        badge: (status) => ({
-            backgroundColor: status === "Escalating" ? "#ff4d4d" : "#baf087",
-            color: "#000",
-            padding: "5px 12px",
-            borderRadius: "15px",
-            fontSize: "0.8rem",
-            fontWeight: "bold"
-        }),
-        actionBtn: {
-            backgroundColor: "transparent",
-            border: "1px solid #baf087",
-            color: "#baf087",
-            padding: "8px 15px",
-            borderRadius: "5px",
-            cursor: "pointer"
+    const handleUpdate = async (id, newStatus) => {
+        try {
+            const response = await fetch(`http://localhost:5000/api/reports/update-status/${id}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ status: newStatus })
+            });
+            if (response.ok) {
+                setReports(prev => prev.map(r => r.id === id ? { ...r, status: newStatus } : r));
+            }
+        } catch (error) {
+            console.error('Failed to update report:', error);
         }
     };
 
+    const stats = {
+        today: reports.filter(r => new Date(r.createdAt) > new Date(new Date() - 24 * 60 * 60 * 1000)).length,
+        pending: reports.filter(r => r.status === "Pending").length,
+        inProgress: reports.filter(r => r.status === "In Progress").length,
+        resolved: reports.filter(r => r.status === "Resolved").length
+    };
+
+    const filteredReports = reports.filter(r =>
+        (issueFilter === 'All' || r.category === issueFilter) &&
+        (statusFilter === 'All' || r.status === statusFilter)
+    );
+
     return (
-        <div style={styles.container}>
-            {/* Sidebar */}
-            <div style={styles.sidebar}>
-                <h2 style={{ color: "#baf087" }}>UrbanSync Admin</h2>
-                <nav style={{ marginTop: "40px" }}>
-                    <p style={{ color: "#baf087", fontWeight: "bold" }}>📥 Incoming Tasks</p>
-                    <p style={{ opacity: 0.6, marginTop: "20px" }}>✅ Resolved Issues</p>
-                </nav>
-            </div>
-
-            {/* Main Area */}
-            <div style={styles.main}>
-                <header style={{ marginBottom: "40px" }}>
-                    <h1>Official Panel: {admin.name}</h1>
-                    <p style={{ opacity: 0.7 }}>Department: Municipal Works</p>
-                </header>
-
-                <div style={{ display: "flex", gap: "20px", marginBottom: "40px" }}>
-                    <div style={{ flex: 1, background: "#1c1c1c", padding: "20px", borderRadius: "10px" }}>
-                        <h2 style={{ color: "#ff4d4d" }}>2</h2>
-                        <p>High Priority (Escalating)</p>
-                    </div>
-                    <div style={{ flex: 1, background: "#1c1c1c", padding: "20px", borderRadius: "10px" }}>
-                        <h2 style={{ color: "#baf087" }}>14</h2>
-                        <p>Total Pending</p>
-                    </div>
+        <div style={{ padding: "40px", backgroundColor: "#131313", minHeight: "100vh", color: "#f3e8d3", fontFamily: "sans-serif" }}>
+            <header style={{ marginBottom: "40px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                <div>
+                    <h2 style={{ color: "#baf087", margin: 0 }}>Welcome to UrbanSync!</h2>
+                    <h1 style={{ margin: "10px 0" }}>Official Panel: <span style={{ borderBottom: "2px solid #baf087" }}>Admin</span></h1>
+                    <h3 style={{ opacity: 0.8 }}>Department of Municipal Works</h3>
                 </div>
 
-                <h3>Active Tickets</h3>
-                <div style={{ marginTop: "20px" }}>
-                    {pendingIssues.map(issue => (
-                        <div key={issue.id} style={styles.card}>
-                            <div>
-                                <h4 style={{ margin: 0 }}>{issue.type} - {issue.location}</h4>
-                                <p style={{ fontSize: "0.9rem", opacity: 0.6 }}>ID: #{issue.id} | Timer: {issue.time}</p>
-                            </div>
-                            <div style={{ display: "flex", alignItems: "center", gap: "20px" }}>
-                                <span style={styles.badge(issue.status)}>{issue.status}</span>
-                                <button style={styles.actionBtn}>Update Status</button>
-                            </div>
-                        </div>
-                    ))}
+                {/* Updated: Increased size and themed color */}
+                <div style={{ textAlign: "right" }}>
+                    <p style={{ color: "#baf087", margin: 0, fontWeight: "bold", fontSize: "1.2rem" }}>Issues reported today</p>
+                    <h2 style={{ margin: "5px 0 0 0", color: "#fff", fontSize: "3.5rem", fontWeight: "bold", lineHeight: "1" }}>{stats.today}</h2>
                 </div>
-            </div>
+            </header>
+
+            <CountingSystem stats={stats} />
+
+            <h2 style={{ marginBottom: "20px" }}>Reported Issues</h2>
+            <FilteringSystem
+                issueFilter={issueFilter} setIssueFilter={setIssueFilter}
+                statusFilter={statusFilter} setStatusFilter={setStatusFilter}
+            />
+
+            <AdminFeed reports={filteredReports} onStatusChange={handleUpdate} />
         </div>
     );
-}
+};
 
 export default OfficialDashboard;
