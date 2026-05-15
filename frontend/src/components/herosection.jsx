@@ -1,10 +1,19 @@
-import React from 'react';
-import { Link, useNavigate} from "react-router-dom";
+import React , { useEffect, useState } from 'react';
+import { Link, useNavigate } from "react-router-dom";
 import logo from "../assets/logo.png";
 import heroSectionImage from "../assets/heroSectionImage.png";
 
 function Herosection() {
     const navigate = useNavigate();
+    const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+    useEffect(() => {
+            const user = localStorage.getItem("user");
+            if (user) {
+                setIsLoggedIn(true);
+            } 
+        }, []);
+
     const styles = {
         heroSection: {
             display: "flex",
@@ -73,9 +82,16 @@ function Herosection() {
                         Report issues, track progress, and help build a better, cleaner, and smarter city with 
                         <span style={styles.highlightText}> UrbanSync!!!</span>
                     </p>
-                    <button style={styles.button} onClick={() => navigate("/signup")}>
-                        Report, Track, Resolve &rarr;
-                    </button>
+                     {isLoggedIn ? (
+                                    <button style={styles.button} onClick={() => navigate("/signup")}>
+                                        Go to Dashboard &rarr;
+                                    </button>
+                                    ) : (
+                                    <button style={styles.button} onClick={() => navigate("/signup")}>
+                                        Report, Track, Resolve &rarr;
+                                    </button>
+                    )}
+                    
                 </div>
 
                 <div style={styles.imageContainer}>

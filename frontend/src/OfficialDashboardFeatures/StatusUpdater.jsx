@@ -64,6 +64,9 @@ const StatusUpdater = ({ currentStatus, onUpdate }) => {
             else                
                 alert("Failed to upload resolved image. Please try again.");
         };
+        if (currentStatus === "Resolved") {
+            return null;
+        }
 
     return (
         <div style={{ position: "relative", display: "inline-block" }}>

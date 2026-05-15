@@ -2,6 +2,12 @@ import React from 'react';
 import StatusUpdater from './StatusUpdater';
 
 const AdminFeed = ({ reports, onStatusChange }) => {
+
+    const formatDate = (dateString) => {
+        if (!dateString) return "N/A";
+        return new Date(dateString).toLocaleDateString();
+    }
+
     return (
         <div style={{ display: "flex", flexDirection: "column", gap: "15px" }}>
             {reports.map((report) => (
@@ -14,21 +20,7 @@ const AdminFeed = ({ reports, onStatusChange }) => {
                     alignItems: "center",
                     gap: "20px"
                 }}>
-                    
-                    {/* <div style={{
-                        width: "80px", height: "80px", backgroundColor: "#000",
-                        borderRadius: "8px", flexShrink: 0, overflow: "hidden",
-                        display: "flex", alignItems: "center", justifyContent: "center"
-                    }}>
-                        {report.image ? (
-                            <img src={report.image} alt="Evidence" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
-                        ) : (
-                            <div style={{ color: "#fff", fontSize: "0.6rem", opacity: 0.4 }}>No Image</div>
-                        )}
-                    </div> */}
-
                     <div style={{ display: "flex", gap: "15px", alignItems: "flex-start" }}>
-                        {/* 1. Issue Proof (Original Evidence) */}
                         <div style={{ textAlign: "center" }}>
                             <div style={{
                                 width: "90px", height: "90px", backgroundColor: "#000",
@@ -42,9 +34,11 @@ const AdminFeed = ({ reports, onStatusChange }) => {
                                 )}
                             </div>
                             <p style={{ margin: "5px 0 0 0", fontSize: "0.65rem", color: "#f3e8d3", opacity: 0.8 }}>Issue-Proof</p>
+                            <p style={{ margin: "2px 0 0 0", fontSize: "0.6rem", color: "#f3e8d3", opacity: 0.5 }}>
+                                {formatDate(report.createdAt)}
+                            </p>
                         </div>
 
-                        {/* 2. Resolved Proof (Only shows if it exists) */}
                         {report.resolvedImage && (
                             <div style={{ textAlign: "center" }}>
                                 <div style={{
@@ -55,6 +49,9 @@ const AdminFeed = ({ reports, onStatusChange }) => {
                                     <img src={report.resolvedImage} alt="Resolved Proof" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
                                 </div>
                                 <p style={{ margin: "5px 0 0 0", fontSize: "0.65rem", color: "#baf087", fontWeight: "bold" }}>Resolved-Proof</p>
+                                <p style={{ margin: "2px 0 0 0", fontSize: "0.6rem", color: "#baf087", opacity: 0.7 }}>
+                                    {formatDate(report.updatedAt)}
+                                </p>
                             </div>
                         )}
                     </div>
@@ -86,9 +83,6 @@ const AdminFeed = ({ reports, onStatusChange }) => {
                             }}>
                                 {report.status}
                             </div>
-                            <p style={{ margin: 0, color: "#f3e8d3", fontSize: "0.7rem", opacity: 0.5 }}>
-                                {report.date || "5/14/2026"}
-                            </p>
                         </div>
                     </div>
                 </div>
