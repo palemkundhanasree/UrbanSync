@@ -70,7 +70,8 @@ function Navbar() {
             background: "none",
             border: "none",
             color: "#f3e8d3",
-            cursor: "pointer"
+            cursor: "pointer",
+            marginLeft: "auto"
         },
         mobileMenuOpen: {
             right: "0"
@@ -103,17 +104,21 @@ function Navbar() {
     };
     
     if (isMobile) {
-        styles.logoContainer = {
-            display: "none"
-        };
-        styles.hamburger = {
-            ...styles.hamburger,
-            display: "block"
-        };
-         styles.menu = {
+    styles.navbar = {
+        ...styles.navbar,
+        padding: "20px"
+    };
+    styles.logoContainer = {
+        width: "160px"
+    };
+    styles.hamburger = {
+        ...styles.hamburger,
+        display: "block"
+    };
+    styles.menu = {
         display: "none"
-       };
-    }
+    };
+   }
     return (
         <>
         <nav style={styles.navbar}>
