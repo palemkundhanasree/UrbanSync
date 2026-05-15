@@ -54,15 +54,30 @@ const IssueList = ({ setActiveCount, setResolvedCount, refreshTrigger }) => {
             ) : (
                 reports.map((report) => (
                     <div key={report._id} className="issue-card">
-                        {report.image && (
-                            <div className="issue-img-container">
-                                <img
-                                    src={report.image}
-                                    alt="Evidence"
-                                    className="issue-img"
-                                />
+
+                        <div className="proof-section" style={{ display: "flex", gap: "15px", padding: "15px" }}>
+                            
+                            <div className="proof-item" style={{ textAlign: "center" }}>
+                                <div className="issue-img-container" style={{ width: "80px", height: "80px", overflow: "hidden", borderRadius: "8px", border: "1px solid #333" }}>
+                                    {report.image ? (
+                                        <img src={report.image} alt="Issue Evidence" className="issue-img" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                                    ) : (
+                                        <div style={{ fontSize: "0.6rem", opacity: 0.4, paddingTop: "30px" }}>No Image</div>
+                                    )}
+                                </div>
+                                <p style={{ fontSize: "0.65rem", marginTop: "5px", color: "#f3e8d3", opacity: 0.7 }}>Issue-Proof</p>
                             </div>
-                        )}
+
+                            {report.resolvedImage && (
+                                <div className="proof-item" style={{ textAlign: "center" }}>
+                                    <div className="resolved-img-container" style={{ width: "80px", height: "80px", overflow: "hidden", borderRadius: "8px", border: "2px solid #baf087" }}>
+                                        <img src={report.resolvedImage} alt="Resolved Evidence" className="issue-img" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                                    </div>
+                                    <p style={{ fontSize: "0.65rem", marginTop: "5px", color: "#baf087", fontWeight: "bold" }}>Resolved-Proof</p>
+                                </div>
+                            )}
+                        </div>
+                        
                         <div className="issue-info">
                             <div className="issue-header">
                                 <h4 className="issue-title">{report.category}</h4>

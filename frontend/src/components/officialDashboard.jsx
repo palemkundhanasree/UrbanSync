@@ -25,17 +25,23 @@ const OfficialDashboard = () => {
         fetchReports();
     }, []);
 
-    const handleUpdate = async (id, newStatus) => {
+    const handleUpdate = async (id, newStatus, resolvedImage) => {
+
         try {
             const response = await fetch(`http://localhost:5000/api/reports/update-status/${id}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify({ status: newStatus })
+                body: JSON.stringify({ 
+                    status: newStatus,
+                    resolvedImage: resolvedImage 
+                })
             });
             if (response.ok) {
-                setReports(prev => prev.map(r => r.id === id ? { ...r, status: newStatus } : r));
+                setReports(prev => prev.map(r => r._id === id ? { ...r, status: newStatus, resolvedImage: resolvedImage } : r));
+                alert('Report status updated successfully!');
+                window.location.reload(); 
             }
         } catch (error) {
             console.error('Failed to update report:', error);
@@ -45,7 +51,7 @@ const OfficialDashboard = () => {
     const stats = {
         today: reports.filter(r => new Date(r.createdAt) > new Date(new Date() - 24 * 60 * 60 * 1000)).length,
         pending: reports.filter(r => r.status === "Pending").length,
-        inProgress: reports.filter(r => r.status === "In Progress").length,
+        inProgress: reports.filter(r => r.status === "In-Progress").length,
         resolved: reports.filter(r => r.status === "Resolved").length
     };
 

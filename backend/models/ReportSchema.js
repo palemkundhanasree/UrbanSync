@@ -25,7 +25,7 @@ const reportSchema = new mongoose.Schema({
     status: {
         type: String,
         default: 'Pending',
-        enum: ['Pending', 'In-Progress', 'Escalated', 'Resolved']
+        enum: ['Pending', 'In-Progress', 'Resolved']
     },
     userId: {
         type: mongoose.Schema.Types.ObjectId,
@@ -33,6 +33,10 @@ const reportSchema = new mongoose.Schema({
     },
     image: {
         type: String
+    },
+    resolvedImage: {
+        type: String,
+        default: ""
     },
 },
     { timestamps: true }

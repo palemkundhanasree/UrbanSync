@@ -64,23 +64,27 @@ router.get('/all', async (req, res) => {
 });
 
 router.put('/update-status/:id', async (req, res) => {
+    
+    const { status, resolvedImage } = req.body;
+    const reportId = req.params.id;
+
     try {
-        const { status } = req.body;
-        const reportId = req.params.id;
+        const updateData = { status: status };
 
-        const allowedStatuses = ['Pending', 'In Progress', 'Resolved'];
-        if (!allowedStatuses.includes(status)) {
-            return res.status(400).json({ message: 'Invalid status value' });
+        if (resolvedImage) {
+            updateData.resolvedImage = resolvedImage;
         }
-
-        if (!updatedReport) {
-            return res.status(404).json({ message: 'Report not found' });
-        }
-
+        const updatedreport = await Report.findByIdAndUpdate(
+            reportId,
+            { $set: updateData },
+            {returnDocument: 'after' , runValidators: true}
+        );
+        console.log(`Status updated to: ${updatedreport.status}`);
+        
         res.status(200).json({
             message: 'Report status updated successfully',
-            report: updatedReport 
-    });
+            report: updatedreport 
+        });
     } catch (error) {
         console.error('Error updating report status:', error);
         res.status(500).json({ message: 'Failed to update report status', error: error.message });

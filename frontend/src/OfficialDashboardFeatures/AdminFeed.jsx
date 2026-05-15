@@ -5,7 +5,7 @@ const AdminFeed = ({ reports, onStatusChange }) => {
     return (
         <div style={{ display: "flex", flexDirection: "column", gap: "15px" }}>
             {reports.map((report) => (
-                <div key={report.id} style={{
+                <div key={report._id} style={{
                     backgroundColor: "#1a2e1a",
                     border: "1px solid #baf08733",
                     borderRadius: "12px",
@@ -14,17 +14,52 @@ const AdminFeed = ({ reports, onStatusChange }) => {
                     alignItems: "center",
                     gap: "20px"
                 }}>
-                    <div style={{
+                    
+                    {/* <div style={{
                         width: "80px", height: "80px", backgroundColor: "#000",
                         borderRadius: "8px", flexShrink: 0, overflow: "hidden",
                         display: "flex", alignItems: "center", justifyContent: "center"
                     }}>
-                        {report.proofImg ? (
-                            <img src={report.proofImg} alt="Evidence" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                        {report.image ? (
+                            <img src={report.image} alt="Evidence" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
                         ) : (
                             <div style={{ color: "#fff", fontSize: "0.6rem", opacity: 0.4 }}>No Image</div>
                         )}
+                    </div> */}
+
+                    <div style={{ display: "flex", gap: "15px", alignItems: "flex-start" }}>
+                        {/* 1. Issue Proof (Original Evidence) */}
+                        <div style={{ textAlign: "center" }}>
+                            <div style={{
+                                width: "90px", height: "90px", backgroundColor: "#000",
+                                borderRadius: "8px", overflow: "hidden", border: "1px solid #444",
+                                display: "flex", alignItems: "center", justifyContent: "center"
+                            }}>
+                                {report.image ? (
+                                    <img src={report.image} alt="Evidence" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                                ) : (
+                                    <div style={{ color: "#fff", fontSize: "0.5rem", opacity: 0.4 }}>No Issue Image</div>
+                                )}
+                            </div>
+                            <p style={{ margin: "5px 0 0 0", fontSize: "0.65rem", color: "#f3e8d3", opacity: 0.8 }}>Issue-Proof</p>
+                        </div>
+
+                        {/* 2. Resolved Proof (Only shows if it exists) */}
+                        {report.resolvedImage && (
+                            <div style={{ textAlign: "center" }}>
+                                <div style={{
+                                    width: "90px", height: "90px", backgroundColor: "#000",
+                                    borderRadius: "8px", overflow: "hidden", border: "2px solid #baf087",
+                                    display: "flex", alignItems: "center", justifyContent: "center"
+                                }}>
+                                    <img src={report.resolvedImage} alt="Resolved Proof" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
+                                </div>
+                                <p style={{ margin: "5px 0 0 0", fontSize: "0.65rem", color: "#baf087", fontWeight: "bold" }}>Resolved-Proof</p>
+                            </div>
+                        )}
                     </div>
+
+
 
                     <div style={{ flex: 1 }}>
                         <h3 style={{ margin: "0 0 5px 0", color: "#baf087", fontSize: "1.1rem" }}>{report.category}</h3>
@@ -38,7 +73,7 @@ const AdminFeed = ({ reports, onStatusChange }) => {
                         <div>
                             <StatusUpdater
                                 currentStatus={report.status}
-                                onUpdate={(newStatus) => onStatusChange(report.id, newStatus)}
+                                onUpdate={(newStatus, resolvedImage) => onStatusChange(report._id, newStatus, resolvedImage)}
                             />
                         </div>
 
