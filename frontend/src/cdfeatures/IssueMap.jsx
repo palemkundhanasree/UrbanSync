@@ -19,41 +19,26 @@ function IssueMap({ reports }) {
         <MapContainer
     center={[17.0005, 81.8040]}
     zoom={13}
-    style={{
-        height: "300px",
-        width: "100%",
-        borderRadius: "12px",
-        marginBottom: "20px"
-    }}
->
-
+    style={{height: "300px",width: "100%",borderRadius: "12px",marginBottom: "20px"}}>
     <TileLayer
         attribution='&copy; OpenStreetMap contributors'
-        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-    />
-
+        url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"/>
     <AutoZoomToLocation coordinates={coordinates} />
-
     {
         coordinates.latitude &&
         coordinates.longitude && (
-
             <Marker
                 position={[
                     coordinates.latitude,
                     coordinates.longitude
-                ]}
-            >
-
+                ]}>
                 <Popup>
                     Current Location
                 </Popup>
-
             </Marker>
         )
     }
-
-</MapContainer>
+   </MapContainer>
     );
 }
 
