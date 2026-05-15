@@ -1,30 +1,56 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import CountingSystem from '../OfficialDashboardFeatures/CountingSystem';
 import FilteringSystem from '../OfficialDashboardFeatures/FilteringSystem';
 import AdminFeed from '../OfficialDashboardFeatures/AdminFeed';
 
 const OfficialDashboard = () => {
-    const [reports, setReports] = useState([
-        { id: 1, type: "Pothole", location: "Sector 4", status: "Pending", description: "Deep pothole on main curve" },
-        { id: 2, type: "Drainage", location: "Main Road", status: "In Progress", description: "Clogged drainage pipe" },
-    ]);
-
+   
+    const [reports, setReports] = useState([]);
     const [issueFilter, setIssueFilter] = useState('All');
     const [statusFilter, setStatusFilter] = useState('All');
 
-    const handleUpdate = (id, newStatus) => {
-        setReports(prev => prev.map(r => r.id === id ? { ...r, status: newStatus } : r));
+    useEffect(() => {
+        const fetchReports = async () => {
+            try {
+                const response = await fetch('http://localhost:5000/api/reports/all');
+                const data = await response.json();
+                if (response.ok) {
+                    setReports(data);
+                }
+            } catch (error) {
+                console.error('Error fetching reports:', error);
+            }
+        };
+
+        fetchReports();
+    }, []);
+
+    const handleUpdate = async (id, newStatus) => {
+        try {
+            const response = await fetch(`http://localhost:5000/api/reports/update-status/${id}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ status: newStatus })
+            });
+            if (response.ok) {
+                setReports(prev => prev.map(r => r.id === id ? { ...r, status: newStatus } : r));
+            }
+        } catch (error) {
+            console.error('Failed to update report:', error);
+        }
     };
 
     const stats = {
-        today: 5,
+        today: reports.filter(r => new Date(r.createdAt) > new Date(new Date() - 24 * 60 * 60 * 1000)).length,
         pending: reports.filter(r => r.status === "Pending").length,
         inProgress: reports.filter(r => r.status === "In Progress").length,
         resolved: reports.filter(r => r.status === "Resolved").length
     };
 
     const filteredReports = reports.filter(r =>
-        (issueFilter === 'All' || r.type === issueFilter) &&
+        (issueFilter === 'All' || r.category === issueFilter) &&
         (statusFilter === 'All' || r.status === statusFilter)
     );
 

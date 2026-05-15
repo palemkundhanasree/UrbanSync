@@ -27,10 +27,10 @@ const AdminFeed = ({ reports, onStatusChange }) => {
                     </div>
 
                     <div style={{ flex: 1 }}>
-                        <h3 style={{ margin: "0 0 5px 0", color: "#baf087", fontSize: "1.1rem" }}>{report.type}</h3>
-                        <p style={{ margin: "0 0 5px 0", color: "#f3e8d3", fontSize: "0.9rem" }}>{report.description || report.type.toLowerCase()}</p>
+                        <h3 style={{ margin: "0 0 5px 0", color: "#baf087", fontSize: "1.1rem" }}>{report.category}</h3>
+                        <p style={{ margin: "0 0 5px 0", color: "#f3e8d3", fontSize: "0.9rem" }}>{report.description || report.category.toLowerCase()}</p>
                         <p style={{ margin: 0, color: "#f3e8d3", fontSize: "0.75rem", opacity: 0.7 }}>
-                            {report.location}, Tirupati (Urban), Tirupati, Andhra Pradesh, 517503, India
+                            {report.address}, Tirupati (Urban), Tirupati, Andhra Pradesh, 517503, India
                         </p>
                     </div>
 
