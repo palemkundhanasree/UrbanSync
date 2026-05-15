@@ -72,16 +72,16 @@ function HowItWorks() {
         },
         {
             title: "Sync with Authorities",
-            desc: "Your report is instantly sent to the municipal dashboard. You can track the status as it moves from 'Pending' to 'In-Progress'."
+            desc: "Your report is instantly sent to the municipal dashboard, where officials can review, prioritize, and begin action on the issue while keeping citizens updated with real-time status changes."
         },
         {
             title: "The 48-Hour Guarantee",
             desc: "If the local official doesn't respond or take action within 48 hours, the system automatically escalates the issue to higher-level city management."
         },
-        {
-            title: "Verify the Fix",
-            desc: "Once the work is done, you'll receive a notification. You provide the final rating and verification to close the loop."
-        }
+       {
+           title: "Real-Time Status Tracking",
+           desc: "Citizens can monitor every reported issue through live status updates such as 'Pending', 'In Progress', and 'Resolved', ensuring complete transparency throughout the resolution process."
+}
     ];
 
     return (
