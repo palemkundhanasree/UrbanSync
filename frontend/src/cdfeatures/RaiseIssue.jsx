@@ -2,7 +2,7 @@ import React ,{ useState, useEffect }from "react";
 import LiveCamera from "./LiveCamera";
 import "./RaiseIssue.css";
 import IssueMap from "../cdfeatures/IssueMap";
-import {MapContainer,TileLayer,Marker,Popup,useMap} from "react-leaflet";
+import {MapContainer,TileLayer,Marker,Popup,useMap,useMapEvents} from "react-leaflet";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 
@@ -18,40 +18,40 @@ L.Icon.Default.mergeOptions({
     "https://unpkg.com/leaflet@1.9.4/dist/images/marker-shadow.png",
 });
 //clickable map component
-function LocationMarker({
-  coordinates,setCoordinates,setFormData})
-   {
-  useMapEvents({
-    click: async (e) => {
-      const lat = e.latlng.lat;
-      const lng = e.latlng.lng;
-      setCoordinates({
-        latitude: lat,
-        longitude: lng
-      });
-      try {
-        const response = await fetch(
-          `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`
-        );
-        const data = await response.json();
-        setFormData((prev) => ({
-          ...prev,
-          address: data.display_name || ""
-        }));
-      } catch (error) {
-        console.log(error);
-      }
-    }
-  });
-  return coordinates.latitude ? (
-    <Marker
-      position={[
-        coordinates.latitude,
-        coordinates.longitude
-      ]}
-    />
-  ) : null;
-}
+// function LocationMarker({
+//   coordinates,setCoordinates,setFormData})
+//    {
+//   useMapEvents({
+//     click: async (e) => {
+//       const lat = e.latlng.lat;
+//       const lng = e.latlng.lng;
+//       setCoordinates({
+//         latitude: lat,
+//         longitude: lng
+//       });
+//       try {
+//         const response = await fetch(
+//           `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`
+//         );
+//         const data = await response.json();
+//         setFormData((prev) => ({
+//           ...prev,
+//           address: data.display_name || ""
+//         }));
+//       } catch (error) {
+//         console.log(error);
+//       }
+//     }
+//   });
+//   return coordinates.latitude ? (
+//     <Marker
+//       position={[
+//         coordinates.latitude,
+//         coordinates.longitude
+//       ]}
+//     />
+//   ) : null;
+// }
 function AutoZoomToLocation({ coordinates }) {
     const map = useMap();
     useEffect(() => {
@@ -71,6 +71,51 @@ function AutoZoomToLocation({ coordinates }) {
             );
         }
     }, [coordinates, map]);
+    return null;
+}
+function MapClickHandler({
+    setCoordinates,
+    setFormData
+}) {
+
+    useMapEvents({
+
+        click: async (e) => {
+
+            const lat = e.latlng.lat;
+            const lng = e.latlng.lng;
+
+            // move marker
+            setCoordinates({
+                latitude: lat,
+                longitude: lng
+            });
+
+            try {
+
+                // reverse geocoding
+                const response = await fetch(
+                    `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}`
+                );
+
+                const data = await response.json();
+
+                // update textarea
+                setFormData((prev) => ({
+                    ...prev,
+                    address: data.display_name || ""
+                }));
+
+            } catch (error) {
+
+                console.log("Error fetching address:", error);
+
+            }
+
+        }
+
+    });
+
     return null;
 }
 function RaiseIssue({ onClose, onReportSubmitted }) {
@@ -253,6 +298,10 @@ const getCurrentLocation = () => {
                 attribution='&copy; OpenStreetMap contributors'
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png" />
             <AutoZoomToLocation coordinates={coordinates} />
+       <MapClickHandler
+                setCoordinates={setCoordinates}
+                setFormData={setFormData}
+            />
             {
                 coordinates.latitude &&
                 coordinates.longitude && (
