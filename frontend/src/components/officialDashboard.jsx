@@ -50,7 +50,9 @@ const OfficialDashboard = () => {
     };
 
     const stats = {
-        today: reports.filter(r => new Date(r.createdAt) > new Date(new Date() - 24 * 60 * 60 * 1000)).length,
+        today: reports.filter(r => {
+            return new Date(r.createdAt).toDateString() === new Date().toDateString();
+        }).length,
         pending: reports.filter(r => r.status === "Pending").length,
         inProgress: reports.filter(r => r.status === "In-Progress").length,
         resolved: reports.filter(r => r.status === "Resolved").length
