@@ -90,8 +90,8 @@ function HowItWorks() {
             desc: "Your report is instantly sent to the municipal dashboard, where officials can review, prioritize, and begin action on the issue while keeping citizens updated with real-time status changes."
         },
         {
-            title: "The 48-Hour Guarantee",
-            desc: "If the local official doesn't respond or take action within 48 hours, the system automatically escalates the issue to higher-level city management."
+            title: "Verified Resolution",
+            desc: "Once the fix is complete, a real-time photo is uploaded as resolved proof, giving you visual confirmation that the issue has been successfully handled."
         },
        {
            title: "Real-Time Status Tracking",

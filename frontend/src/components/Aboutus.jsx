@@ -92,8 +92,8 @@ function AboutUs() {
                         <p style={styles.cardText}>Using GPS and live-camera verification to ensure every report is authentic and actionable.</p>
                     </div>
                     <div style={styles.card}>
-                        <h3 style={styles.cardTitle}>Escalation</h3>
-                        <p style={styles.cardText}>Our automated system ensures that neglected issues are escalated to higher authorities after 48 hours.</p>
+                        <h3 style={styles.cardTitle}>Resolved Proof</h3>
+                        <p style={styles.cardText}>Every completed issue requires real-time photo verification, ensuring community fixes are genuinely delivered with full transparency.</p>
                     </div>
                 </div>
 
