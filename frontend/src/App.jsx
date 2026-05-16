@@ -1,6 +1,6 @@
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { ProtectedRoute, PublicRoute } from "./components/ProtectedRoute";
-import Layout from "./components/layout"; 
+import Layout from "./components/Layout"; 
 import Herosection from "./components/Herosection";
 import Login from "./components/Login";
 import Signup from "./components/Signup";
