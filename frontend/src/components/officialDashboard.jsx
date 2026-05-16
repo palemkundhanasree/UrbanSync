@@ -4,6 +4,8 @@ import FilteringSystem from '../OfficialDashboardFeatures/FilteringSystem';
 import AdminFeed from '../OfficialDashboardFeatures/AdminFeed';
 
 const OfficialDashboard = () => {
+
+    const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:5000";
    
     const [reports, setReports] = useState([]);
     const [issueFilter, setIssueFilter] = useState('All');
@@ -12,7 +14,7 @@ const OfficialDashboard = () => {
     useEffect(() => {
         const fetchReports = async () => {
             try {
-                const response = await fetch('http://localhost:5000/api/reports/all');
+                const response = await fetch(`${API_BASE}/api/reports/all`);
                 const data = await response.json();
                 if (response.ok) {
                     setReports(data);
@@ -28,7 +30,7 @@ const OfficialDashboard = () => {
     const handleUpdate = async (id, newStatus, resolvedImage) => {
 
         try {
-            const response = await fetch(`http://localhost:5000/api/reports/update-status/${id}`, {
+            const response = await fetch(`${API_BASE}/api/reports/update-status/${id}`, {
                 method: 'PUT',
                 headers: {
                     'Content-Type': 'application/json'

@@ -2,6 +2,9 @@ import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 
 function Signup() {
+
+    const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:5000";
+
     const [formData, setFormData] = useState({
         name: '',
         email: '',
@@ -73,7 +76,7 @@ function Signup() {
                 return;
             }
 
-            const response = await fetch('http://localhost:5000/api/auth/signup', {
+            const response = await fetch(`${API_BASE}/api/auth/signup`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(formData),

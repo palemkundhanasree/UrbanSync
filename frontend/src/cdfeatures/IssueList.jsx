@@ -4,6 +4,7 @@ import "./IssueList.css";
 const IssueList = ({ setActiveCount, setResolvedCount, refreshTrigger }) => {
     const [reports, setReports] = useState([]);
     const [loading, setLoading] = useState(true);
+    const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:5000";
 
     useEffect(() => {
         const fetchReports = async () => {
@@ -16,7 +17,7 @@ const IssueList = ({ setActiveCount, setResolvedCount, refreshTrigger }) => {
             }
 
             try {
-                const response = await fetch(`http://localhost:5000/api/reports/user/${userId}`);
+                const response = await fetch(`${API_BASE}/api/reports/user/${userId}`);
                 const data = await response.json();
                 if (response.ok) {
                     const reportsArray = Array.isArray(data)? data : [];

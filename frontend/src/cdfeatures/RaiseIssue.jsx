@@ -69,6 +69,9 @@ function MapClickHandler({setCoordinates,setFormData})
     return null;
 }
 function RaiseIssue({ onClose, onReportSubmitted }) {
+
+    const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:5000";
+
     const[capturedImage, setCapturedImage] = useState(null);
     const[loadingLocation, setLoadingLocation]=useState(false);
      const [reports, setReports] = useState([]);
@@ -163,7 +166,7 @@ const getCurrentLocation = () => {
         }
 
         try{
-          const response =  await fetch('http://localhost:5000/api/reports/add', {
+          const response =  await fetch(`${API_BASE}/api/reports/add`, {
             method: 'POST',
             body: data
           });
