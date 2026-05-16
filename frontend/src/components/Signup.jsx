@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
 function Signup() {
@@ -12,6 +12,15 @@ function Signup() {
         role: 'citizen'
     });
 
+    const [isMobile, setIsMobile] = useState(window.innerWidth <= 480);
+    useEffect(() => {
+        const handleResize = () => {
+            setIsMobile(window.innerWidth <= 480);
+        };
+        window.addEventListener("resize", handleResize);
+        return () => window.removeEventListener("resize", handleResize);
+    }, []);
+
     const styles = {
         container: {
             display: "flex",
@@ -20,11 +29,12 @@ function Signup() {
             minHeight: "80vh",
             backgroundColor: "#133215",
             color: "#f3e8d3",
-            padding: "20px"
+            padding: isMobile ? "20px 15px" : "40px 20px",
+            boxSizing: "border-box"
         },
         card: {
             backgroundColor: "rgba(255, 255, 255, 0.05)",
-            padding: "40px",
+            padding: isMobile ? "30px 20px" : "40px",
             borderRadius: "15px",
             boxShadow: "0 8px 32px rgba(0,0,0,0.3)",
             width: "100%",
@@ -32,9 +42,20 @@ function Signup() {
             textAlign: "center",
             border: "1px solid rgba(255, 255, 255, 0.1)"
         },
-        title: { fontSize: "2rem", marginBottom: "10px", color: "#baf087" },
-        inputGroup: { marginBottom: "15px", textAlign: "left" },
-        label: { display: "block", marginBottom: "5px", fontSize: "0.9rem" },
+        title: { 
+            fontSize: isMobile ? "1.8rem" : "2rem",
+            marginBottom: "10px", 
+            color: "#baf087" 
+        },
+        inputGroup: { 
+            marginBottom: "15px", 
+            textAlign: "left" 
+        },
+        label: { 
+            display: "block", 
+            marginBottom: "5px", 
+            fontSize: "0.9rem" 
+        },
         input: {
             width: "100%",
             padding: "12px",
@@ -44,7 +65,8 @@ function Signup() {
             color: "#fff",
             fontSize: "1rem",
             outline: "none",
-            boxSizing: "border-box"
+            boxSizing: "border-box",
+            WebkitAppearance: "none"
         },
         button: {
             width: "100%",
@@ -58,8 +80,16 @@ function Signup() {
             cursor: "pointer",
             marginTop: "15px"
         },
-        footerText: { marginTop: "20px", fontSize: "0.9rem", color: "#ccc" },
-        link: { color: "#baf087", textDecoration: "none", fontWeight: "600" }
+        footerText: { 
+            marginTop: "20px", 
+            fontSize: "0.9rem", 
+            color: "#ccc" 
+        },
+        link: { 
+            color: "#baf087", 
+            textDecoration: "none", 
+            fontWeight: "600" 
+        }
     };
 
     const handleChange = (e) => {

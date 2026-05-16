@@ -1,36 +1,50 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
 function HowItWorks() {
+
+    const[isMobile, setIsMobile] = useState(window.innerWidth < 768);
+
+    useEffect(() => {
+        const handleResize = () => {
+            setIsMobile(window.innerWidth < 768);
+        };
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
+
     const styles = {
         container: {
             backgroundColor: "#133215",
             color: "#f3e8d3",
-            padding: "80px 40px",
-            textAlign: "center"
+            padding: isMobile ? "40px 15px" : "80px 40px",
+            textAlign: "center",
+            boxSizing: "border-box"
         },
         title: {
-            fontSize: "2.8rem",
+            fontSize: isMobile ? "1.8rem" : "2.8rem",
             color: "#baf087",
-            marginBottom: "50px",
+            marginBottom: isMobile ? "30px" : "50px",
             fontWeight: "800"
         },
         stepsContainer: {
             display: "flex",
             flexDirection: "column",
-            gap: "40px",
+            gap: isMobile ? "20px" : "40px",
             maxWidth: "800px",
             margin: "0 auto"
         },
         stepBox: {
             display: "flex",
-            alignItems: "flex-start",
-            gap: "25px",
+            flexDirection: isMobile ? "column" : "row",
+            alignItems:isMobile ? "center" : "flex-start",
+            gap: isMobile ? "20px" : "25px",
             backgroundColor: "rgba(255, 255, 255, 0.05)",
-            padding: "30px",
+            padding: isMobile ? "20px" : "30px",
             borderRadius: "15px",
             borderLeft: "5px solid #baf087",
-            textAlign: "left"
+            textAlign: isMobile ? "center" : "left",
+            boxSizing: "border-box"
         },
         stepNumber: {
             backgroundColor: "#baf087",
@@ -46,12 +60,13 @@ function HowItWorks() {
             flexShrink: 0
         },
         stepTitle: {
-            fontSize: "1.4rem",
+            fontSize: isMobile ? "1.2rem" : "1.4rem",
             color: "#baf087",
-            marginBottom: "10px"
+            marginBottom: "10px",
+            marginTop: isMobile ? "5px" : "0px"
         },
         stepDescription: {
-            fontSize: "1.05rem",
+            fontSize: isMobile ? "1.05rem" : "1.05rem",
             lineHeight: "1.6",
             opacity: "0.9"
         },

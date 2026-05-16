@@ -48,6 +48,11 @@ const IssueList = ({ setActiveCount, setResolvedCount, refreshTrigger }) => {
         return <div><p className="loading-text">Loading...</p></div>;
     }
 
+    const formatDate = (dateString) => {
+        if (!dateString) return "N/A";
+        return new Date(dateString).toLocaleDateString();
+    }
+
     return (
         <div className="issue-container">
             {reports.length === 0 ? (
@@ -56,10 +61,9 @@ const IssueList = ({ setActiveCount, setResolvedCount, refreshTrigger }) => {
                 reports.map((report) => (
                     <div key={report._id} className="issue-card">
 
-                        <div className="proof-section" style={{ display: "flex", gap: "15px", padding: "15px" }}>
-                            
+                        <div className="proof-section">
                             <div className="proof-item" style={{ textAlign: "center" }}>
-                                <div className="issue-img-container" style={{ width: "80px", height: "80px", overflow: "hidden", borderRadius: "8px", border: "1px solid #333" }}>
+                                <div className="issue-img-container">
                                     {report.image ? (
                                         <img src={report.image} alt="Issue Evidence" className="issue-img" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
                                     ) : (
@@ -67,14 +71,20 @@ const IssueList = ({ setActiveCount, setResolvedCount, refreshTrigger }) => {
                                     )}
                                 </div>
                                 <p style={{ fontSize: "0.65rem", marginTop: "5px", color: "#f3e8d3", opacity: 0.7 }}>Issue-Proof</p>
+                                <p style={{ margin: "2px 0 0 0", fontSize: "0.6rem", color: "#baf087", opacity: 0.7 }}>
+                                    {formatDate(report.createdAt)}
+                                </p>    
                             </div>
 
                             {report.resolvedImage && (
                                 <div className="proof-item" style={{ textAlign: "center" }}>
-                                    <div className="resolved-img-container" style={{ width: "80px", height: "80px", overflow: "hidden", borderRadius: "8px", border: "2px solid #baf087" }}>
+                                    <div className="resolved-img-container">
                                         <img src={report.resolvedImage} alt="Resolved Evidence" className="issue-img" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
                                     </div>
                                     <p style={{ fontSize: "0.65rem", marginTop: "5px", color: "#baf087", fontWeight: "bold" }}>Resolved-Proof</p>
+                                    <p style={{ margin: "2px 0 0 0", fontSize: "0.6rem", color: "#f3e8d3", opacity: 0.5 }}>
+                                        {formatDate(report.updatedAt)}
+                                    </p>
                                 </div>
                             )}
                         </div>
@@ -89,9 +99,6 @@ const IssueList = ({ setActiveCount, setResolvedCount, refreshTrigger }) => {
                             <p className="issue-description">{report.description}</p>
                             <div className="issue-footer">
                                 <span className="issue-location">{report.address}</span>
-                                <span className="issue-date">
-                                    {new Date(report.createdAt).toLocaleDateString()}
-                                </span>
                             </div>
                         </div>
                     </div>

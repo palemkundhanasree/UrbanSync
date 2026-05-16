@@ -10,6 +10,7 @@ const OfficialDashboard = () => {
     const [reports, setReports] = useState([]);
     const [issueFilter, setIssueFilter] = useState('All');
     const [statusFilter, setStatusFilter] = useState('All');
+    const [isMobile, setIsMobile] = useState(window.innerWidth <= 768);
 
     useEffect(() => {
         const fetchReports = async () => {
@@ -25,6 +26,12 @@ const OfficialDashboard = () => {
         };
 
         fetchReports();
+
+        const handleResize = () => {
+            setIsMobile(window.innerWidth <= 768);
+        };
+        window.addEventListener("resize", handleResize);
+        return () => window.removeEventListener("resize", handleResize);
     }, []);
 
     const handleUpdate = async (id, newStatus, resolvedImage) => {
@@ -63,25 +70,82 @@ const OfficialDashboard = () => {
         (statusFilter === 'All' || r.status === statusFilter)
     );
 
+    const styles = {
+        container: {
+            padding: isMobile ? "20px 15px" : "40px", 
+            backgroundColor: "#131313", 
+            minHeight: "100vh", 
+            color: "#f3e8d3", 
+            fontFamily: "sans-serif",
+            boxSizing: "border-box"
+        },
+        header: { 
+            marginBottom: "40px", 
+            display: "flex", 
+            flexDirection: isMobile ? "column" : "row",
+            justifyContent: "space-between", 
+            alignItems: isMobile ? "flex-start" : "center",
+            gap: isMobile ? "25px" : "0px"
+        },
+        titleGroup: {
+            width: "100%"
+        },
+        mainGreeting: {
+            color: "#baf087", 
+            margin: 0,
+            fontSize: isMobile ? "1.5rem" : "2rem"
+        },
+        panelHeading: {
+            margin: "10px 0",
+            fontSize: isMobile ? "1.8rem" : "2.5rem"
+        },
+        departmentHeading: {
+            opacity: 0.8,
+            fontSize: isMobile ? "1rem" : "1.2rem",
+            margin: 0
+        },
+        badgeCounter: {
+            textAlign: isMobile ? "left" : "right",
+            width: isMobile ? "100%" : "auto",
+            backgroundColor: isMobile ? "rgba(255,255,255,0.03)" : "transparent",
+            padding: isMobile ? "15px" : "0px",
+            borderRadius: isMobile ? "12px" : "0px",
+            border: isMobile ? "1px solid rgba(186, 240, 135, 0.1)" : "none",
+            boxSizing: "border-box"
+        },
+        badgeNumber: { 
+            margin: "5px 0 0 0", 
+            color: "#fff", 
+            fontSize: isMobile ? "2.5rem" : "3.5rem", 
+            fontWeight: "bold", 
+            lineHeight: "1" 
+        },
+        sectionTitle: {
+            marginBottom: "20px",
+            fontSize: isMobile ? "1.4rem" : "1.8rem",
+            marginTop: "30px"
+        }
+    };
+
     return (
-        <div style={{ padding: "40px", backgroundColor: "#131313", minHeight: "100vh", color: "#f3e8d3", fontFamily: "sans-serif" }}>
-            <header style={{ marginBottom: "40px", display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                <div>
-                    <h2 style={{ color: "#baf087", margin: 0 }}>Welcome to UrbanSync!</h2>
-                    <h1 style={{ margin: "10px 0" }}>Official Panel: <span style={{ borderBottom: "2px solid #baf087" }}>Admin</span></h1>
-                    <h3 style={{ opacity: 0.8 }}>Department of Municipal Works</h3>
+        <div style={styles.container}>
+            <header style={styles.header}>
+                <div style={styles.titleGroup}>
+                    <h2 style={styles.mainGreeting}>Welcome to UrbanSync!</h2>
+                    <h1 style={styles.panelHeading}>Official Panel: <span style={{ borderBottom: "2px solid #baf087" }}>Admin</span></h1>
+                    <h3 style={styles.departmentHeading}>Department of Municipal Works</h3>
                 </div>
 
-                {/* Updated: Increased size and themed color */}
-                <div style={{ textAlign: "right" }}>
-                    <p style={{ color: "#baf087", margin: 0, fontWeight: "bold", fontSize: "1.2rem" }}>Issues reported today</p>
-                    <h2 style={{ margin: "5px 0 0 0", color: "#fff", fontSize: "3.5rem", fontWeight: "bold", lineHeight: "1" }}>{stats.today}</h2>
+                <div style={styles.badgeCounter}>
+                    <p style={{ color: "#baf087", margin: 0, fontWeight: "bold", fontSize: isMobile ? "1rem" : "1.2rem" }}>Issues reported today</p>
+                    <h2 style={styles.badgeNumber}>{stats.today}</h2>
                 </div>
             </header>
 
             <CountingSystem stats={stats} />
 
-            <h2 style={{ marginBottom: "20px" }}>Reported Issues</h2>
+            <h2 style={styles.sectionTitle}>Reported Issues</h2>
+            
             <FilteringSystem
                 issueFilter={issueFilter} setIssueFilter={setIssueFilter}
                 statusFilter={statusFilter} setStatusFilter={setStatusFilter}

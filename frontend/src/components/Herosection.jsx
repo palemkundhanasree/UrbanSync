@@ -7,11 +7,18 @@ function Herosection() {
     const navigate = useNavigate();
     const [isLoggedIn, setIsLoggedIn] = useState(false);
 
+    const [isMobile, setIsMobile] = useState(window.innerWidth <= 600);
+
     useEffect(() => {
             const user = localStorage.getItem("user");
             if (user) {
                 setIsLoggedIn(true);
-            } 
+            }
+            const handleResize = () => {
+                setIsMobile(window.innerWidth <= 600);
+            };
+            window.addEventListener("resize", handleResize);
+            return () => window.removeEventListener("resize", handleResize);
         }, []);
 
     const styles = {
@@ -21,13 +28,15 @@ function Herosection() {
             justifyContent: "space-around",
             alignItems: "center",
             minHeight: "70vh",
-            padding: "0 60px",
+            padding: isMobile ? "20px 15px" : "0 60px",
         },
         heroSectionText: {
-            padding:"60px",
-            paddingLeft:"90px",
+            padding: isMobile ? "20px 10px" : "60px",
+            paddingLeft: isMobile ? "10px" : "90px",
             minWidth: "300px",
             color: "#f3e8d3",
+            textAlign: isMobile ? "center" : "left",
+            boxSizing: "border-box"
         },
         heading: {
             fontSize: "clamp(2rem, 5vw, 3.5rem)", 
@@ -39,12 +48,13 @@ function Herosection() {
             color: "#baf087"     
         },
         paragraph: {
-            fontSize: "1.2rem",
+            fontSize: isMobile ? "1rem" : "1.2rem",
             marginTop: "20px",
             lineHeight: "1.6",
             maxWidth: "500px",
             color: "#fff",
-            opacity: "0.9"
+            opacity: "0.9",
+            margin: isMobile ? "20px auto 0 auto" : "20px 0 0 0"
         },
         button: {
             marginTop: "30px",
@@ -56,18 +66,24 @@ function Herosection() {
             borderRadius: "50px", 
             cursor: "pointer",
             fontWeight: "700",
-            transition: "transform 0.2s ease"
+            transition: "transform 0.2s ease",
+            width: isMobile ? "100%" : "auto",
+            maxWidth: "320px"
         },
         imageContainer: {
             flex: "1",
             display: "flex",
             justifyContent: "center",
-            minWidth: "300px"
+            minWidth: "300px",
+            marginTop: isMobile ? "30px" : "0",
+            boxSizing: "border-box",
+            padding: isMobile ? "0 10px" : "0"
         },
         heroImg: {
             width: "100%",
-            maxWidth: "700px",
-            objectFit: "contain"
+            maxWidth: isMobile ? "450px" : "700px",
+            objectFit: "contain",
+            height: "auto"
         }
     };
 

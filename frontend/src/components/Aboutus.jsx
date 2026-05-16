@@ -1,14 +1,26 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
 function AboutUs() {
+
+    const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+
+    useEffect(() => {
+        const handleResize = () => {
+            setIsMobile(window.innerWidth < 768);
+        };
+        window.addEventListener('resize', handleResize);
+        return () => window.removeEventListener('resize', handleResize);
+    }, []);
+
     const styles = {
         container: {
             backgroundColor: "#133215",
             color: "#f3e8d3",
             minHeight: "100vh",
-            padding: "80px 40px",
-            fontFamily: "sans-serif"
+            padding:isMobile ? "40px 20px" : "80px 40px",
+            fontFamily: "sans-serif",
+            boxSizing: "border-box"
         },
         content: {
             maxWidth: "900px",
@@ -16,13 +28,13 @@ function AboutUs() {
             textAlign: "center"
         },
         title: {
-            fontSize: "3rem",
+            fontSize:isMobile ? "2rem" : "3rem",
             color: "#baf087",
             marginBottom: "20px",
             fontWeight: "800"
         },
         description: {
-            fontSize: "1.2rem",
+            fontSize: isMobile ? "1.rem" : "1.2rem",
             lineHeight: "1.8",
             marginBottom: "40px",
             color: "#fff",
@@ -32,27 +44,27 @@ function AboutUs() {
             display: "grid",
             gridTemplateColumns: "repeat(auto-fit, minmax(250px, 1fr))",
             gap: "30px",
-            marginTop: "50px"
+            marginTop: isMobile ? "30px" : "50px"
         },
         card: {
             backgroundColor: "rgba(255, 255, 255, 0.05)",
-            padding: "30px",
+            padding:  isMobile ? "20px" : "30px",
             borderRadius: "15px",
             border: "1px solid rgba(186, 240, 135, 0.2)",
             textAlign: "left"
         },
         cardTitle: {
             color: "#baf087",
-            fontSize: "1.4rem",
+            fontSize: isMobile ? "1.2rem" : "1.4rem",
             marginBottom: "15px"
         },
         cardText: {
-            fontSize: "1rem",
+            fontSize: isMobile ? "0.9rem" : "1rem",
             lineHeight: "1.5"
         },
         backBtn: {
             display: "inline-block",
-            marginTop: "50px",
+            marginTop: isMobile ? "40px" : "50px",
             color: "#baf087",
             textDecoration: "none",
             fontWeight: "600",

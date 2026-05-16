@@ -42,3 +42,23 @@
   opacity: 0.5;
 }
 
+@media (max-width: 768px) {
+  .app-footer {
+    /* Tighten the padding so it doesn't take up too much vertical space on mobile */
+    padding: 25px 15px 15px 15px;
+  }
+
+  .footer-logo {
+    font-size: 1.3rem; 
+  }
+
+  .footer-tagline {
+    font-size: 0.8rem; 
+    padding: 0 10px;   
+  }
+
+  .footer-bottom {
+    font-size: 0.75rem; 
+    line-height: 1.4;
+  }
+}

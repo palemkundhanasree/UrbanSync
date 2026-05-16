@@ -1,10 +1,12 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 
 function Login() {
 
     const API_BASE = import.meta.env.VITE_API_URL || "http://localhost:5000";
 
+    const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+    
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [role, setRole] = useState('citizen');
@@ -14,13 +16,14 @@ function Login() {
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
-            height: "80vh",
-            backgroundColor: "#133215", // Matching your theme
-            color: "#f3e8d3"
+            backgroundColor: "#133215",
+            color: "#f3e8d3",
+            padding: isMobile ? "20px 15px" : "40px 20px",
+            boxSizing: "border-box"
         },
         card: {
             backgroundColor: "rgba(255, 255, 255, 0.05)",
-            padding: "40px",
+            padding: isMobile ? "30px 20px" : "40px",
             borderRadius: "15px",
             boxShadow: "0 8px 32px rgba(0,0,0,0.3)",
             width: "100%",
@@ -29,7 +32,7 @@ function Login() {
             border: "1px solid rgba(255, 255, 255, 0.1)"
         },
         title: { 
-            fontSize: "2rem",
+            fontSize: isMobile?"1.7rem" : "2rem",
             marginBottom: "10px", 
             color: "#baf087" 
         },
@@ -51,11 +54,12 @@ function Login() {
             color: "#fff",
             fontSize: "1rem",
             outline: "none",
-            boxSizing: "border-box"
+            boxSizing: "border-box",
+            WebkitAppearance: "none"
         },
         button: {
             width: "100%",
-            padding: "12px",
+            padding: "14px",
             backgroundColor: "#baf087",
             color: "#133215",
             border: "none",
@@ -73,7 +77,9 @@ function Login() {
         link: { 
             color: "#baf087", 
             textDecoration: "none", 
-            fontWeight: "600" 
+            fontWeight: "600" ,
+            display: "inline-block",
+            padding:"5px"
         }
     };
 
@@ -149,7 +155,7 @@ function Login() {
                         />
                     </div>
 
-                    <button type="submit" style={styles.button} onClick={handleLogin}>
+                    <button type="submit" style={styles.button}>
                         Log In
                     </button>
                 </form>

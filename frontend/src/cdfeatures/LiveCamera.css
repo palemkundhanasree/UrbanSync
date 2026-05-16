@@ -25,11 +25,14 @@
     border-radius: 20px;
     padding: 20px;
     box-shadow: 0 10px 35px rgba(0,0,0,0.4);
+    box-sizing: border-box ;
 }
 
 .video-feed {
     width: 100%;
     height: 350px;
+    aspect-ratio: 4/3;
+    min-height: 350px;
     object-fit: cover;
     border-radius: 16px;
     border: 2px solid rgba(186, 240, 135, 0.3);
@@ -75,6 +78,7 @@
     border-radius: 20px;
     padding: 20px;
     text-align: center;
+    box-sizing: border-box ;
 }
 
 .photo-preview img {
@@ -86,6 +90,8 @@
 
 .preview-image{
     width: 100%;
+    height: auto;
+    aspect-ratio: 4/3;
     max-height: 300px;
     object-fit: cover;
     border-radius: 16px;
@@ -134,5 +140,36 @@
     .preview-controls,
     .retake-btn {
         width: 100%;
+    }
+}
+
+    @media (max-width: 576px) {
+    .Live-camera, .photo-preview {
+        padding: 15px; 
+        border-radius: 14px;
+    }
+
+    .video-feed, .preview-image {
+        max-height: 240px; 
+    }
+
+    .camera-controls {
+        flex-direction: column;
+        gap: 10px; 
+        margin-top: 14px;
+    }
+
+    .capture-btn,
+    .cancel-btn {
+        width: 100%;
+        padding: 14px; 
+        font-size: 1.05rem;
+    }
+    .photo-preview .preview-controls,
+    .photo-preview .retake-btn {
+        display: block;
+        width: 100%;
+        margin: 8px 0 0 0;
+        padding: 14px;
     }
 }

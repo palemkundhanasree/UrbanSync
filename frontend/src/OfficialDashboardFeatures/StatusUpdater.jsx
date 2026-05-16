@@ -1,10 +1,19 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import LiveCamera from '../cdfeatures/LiveCamera';
 
 const StatusUpdater = ({ currentStatus, onUpdate }) => {
 
+    const [isMobile, setIsMobile] = useState(window.innerWidth <= 600);
     const [isUploading, setIsUploading] = React.useState(false);
     const [showCamera, setShowCamera] = React.useState(false);
+
+    useEffect(() => {
+        const handleResize = () => {
+            setIsMobile(window.innerWidth <= 600);
+        };
+        window.addEventListener("resize", handleResize);
+        return () => window.removeEventListener("resize", handleResize);
+    }, []);
 
     const handleUploadToCloudinary = async (imageData) => {
         setIsUploading(true);
@@ -43,6 +52,7 @@ const StatusUpdater = ({ currentStatus, onUpdate }) => {
             } else {
                 onUpdate(selectedStatus);
             }
+            e.target.value = "label";
         };
 
         const handleCapture = async (capturedData) => {
@@ -57,14 +67,49 @@ const StatusUpdater = ({ currentStatus, onUpdate }) => {
             return null;
         }
 
+        const styles = {
+        wrapper: { 
+            position: "relative", 
+            display: "inline-block",
+            width: isMobile ? "100%" : "auto" 
+        },
+        cameraOverlay: {
+            position: 'fixed', 
+            top: 0, 
+            left: 0, 
+            right: 0, 
+            bottom: 0,
+            backgroundColor: 'rgba(0,0,0,0.95)', 
+            zIndex: 1000, 
+            display: 'flex',
+            alignItems: 'center', 
+            justifyContent: 'center',
+            padding: isMobile ? "10px" : "20px",
+            boxSizing: "border-box"
+        },
+        selectInput: {
+            backgroundColor: "#baf087",
+            color: "#133215",
+            padding: isMobile ? "12px 20px" : "8px 16px",
+            borderRadius: "8px",
+            border: "none",
+            fontWeight: "bold",
+            cursor: "pointer",
+            fontSize: isMobile ? "0.85rem" : "0.75rem",
+            WebkitAppearance: "none",
+            MozAppearance: "none",
+            appearance: "none",
+            textAlign: "center",
+            width: isMobile ? "100%" : "150px",
+            boxSizing: "border-box",
+            boxShadow: "0 4px 12px rgba(0,0,0,0.2)"
+        }
+    };
+
     return (
-        <div style={{ position: "relative", display: "inline-block" }}>
+        <div style={styles.wrapper}>
             {showCamera && (
-                <div style={{
-                    position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh',
-                    backgroundColor: 'rgba(0,0,0,0.9)', zIndex: 1000, display: 'flex',
-                    alignItems: 'center', justifyContent: 'center'
-                }}>
+                <div style={styles.cameraOverlay}>
                     <LiveCamera 
                         onCapture={handleCapture}
                         onCancel={() => setShowCamera(false)}
@@ -75,19 +120,7 @@ const StatusUpdater = ({ currentStatus, onUpdate }) => {
                 value="label"
                 disabled={isUploading}
                 onChange={handleChange}
-                style={{
-                    backgroundColor: "#baf087",
-                    color: "#000",
-                    padding: "8px 16px",
-                    borderRadius: "8px",
-                    border: "none",
-                    fontWeight: "bold",
-                    cursor: "pointer",
-                    fontSize: "0.75rem",
-                    appearance: "none",
-                    textAlign: "center",
-                    width: "140px"
-                }}
+                style={styles.selectInput}
             >
                 <option value="label">{isUploading ? "UPLOADING..." : "UPDATE STATUS"}</option>
                 <option value="Pending">Pending {currentStatus === "Pending" ? "✓" : ""}</option>
