@@ -9,8 +9,12 @@ function Signup() {
         name: '',
         email: '',
         password: '',
-        role: 'citizen'
+        role: 'citizen',
+        otp:''
     });
+
+    const [otpSent, setOtpSent] = useState(false);
+    const [isLoading, setIsLoading] = useState(false);    
 
     const [isMobile, setIsMobile] = useState(window.innerWidth <= 480);
     useEffect(() => {
@@ -96,69 +100,143 @@ function Signup() {
         setFormData({ ...formData, [e.target.name]: e.target.value });
     };
 
-    const handleSignup =  async (e) => {
+    const handleRequestOtp = async (e) => {
         e.preventDefault();
-        console.log("Creating account for:", formData);
-        // Backend API call
-        try{
-            if(formData.password.length <= 8){
-                alert("Password must be at least 8 characters long.");
-                return;
-            }
-
-            const response = await fetch(`${API_BASE}/api/auth/signup`, {
+        if (!formData.email || !formData.name || !formData.password) {
+            alert("Please fill in all registration fields first.");
+            return;
+        }
+        setIsLoading(true);
+        try {
+            const response = await fetch(`${API_BASE}/api/otp/send-otp`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(formData),
+                body: JSON.stringify({ email: formData.email })
             });
-            const data= await response.json();
-            
-            if(response.ok){
-                alert("Account created successfully! Please log in.");
-                window.location.href="/login";
+            const data = await response.json();
+
+            if (response.ok) {
+                alert(data.message);
+                setOtpSent(true); 
             } else {
-                alert(data.message || "Failed to create account. Please try again.");
+                alert(`Error: ${data.message}`);
             }
-        }
-        catch (error) {
-            console.error("Error creating account:", error);
-            alert("Failed to create account. Please try again.");
+        } catch (error) {
+            console.error("OTP delivery network failure:", error);
+            alert("Network connection error. Failed to dispatch email code.");
+        } finally {
+            setIsLoading(false);
         }
     };
+
+    const handleVerifyAndSignup = async (e) => {
+        e.preventDefault();
+        if (!formData.otp) {
+            alert("Please enter the verification code sent to your email.");
+            return;
+        }
+        setIsLoading(true);
+        try {
+            const response = await fetch(`${API_BASE}/api/otp/verify-signup`, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(formData)
+            });
+            const data = await response.json();
+
+            if (response.ok) {
+                alert("🎉 Success! Account verified and registered successfully.");
+                window.location.href="/login";
+            } else {
+                alert(`Verification Failure: ${data.message}`);
+            }
+        } catch (error) {
+            console.error("Verification processing error:", error);
+            alert("Network failure processing registration context confirmation.");
+        } finally {
+            setIsLoading(false);
+        }
+    };
+
+    // const handleSignup =  async (e) => {
+    //     e.preventDefault();
+    //     console.log("Creating account for:", formData);
+    //     // Backend API call
+    //     try{
+    //         if(formData.password.length <= 8){
+    //             alert("Password must be at least 8 characters long.");
+    //             return;
+    //         }
+
+    //         const response = await fetch(`${API_BASE}/api/auth/signup`, {
+    //             method: 'POST',
+    //             headers: { 'Content-Type': 'application/json' },
+    //             body: JSON.stringify(formData),
+    //         });
+    //         const data= await response.json();
+            
+    //         if(response.ok){
+    //             alert("Account created successfully! Please log in.");
+    //             window.location.href="/login";
+    //         } else {
+    //             alert(data.message || "Failed to create account. Please try again.");
+    //         }
+    //     }
+    //     catch (error) {
+    //         console.error("Error creating account:", error);
+    //         alert("Failed to create account. Please try again.");
+    //     }
+    // };
 
     return (
         <div style={styles.container}>
             <div style={styles.card}>
                 <h2 style={styles.title}>Join UrbanSync</h2>
-                <p style={{marginBottom: '20px'}}>Create an account to improve your city</p>
-                
-                <form onSubmit={handleSignup}>
-                    <div style={styles.inputGroup}>
-                        <label style={styles.label}>Full Name</label>
-                        <input 
-                            type="text" name="name" style={styles.input} placeholder="John Doe"
-                            onChange={handleChange} required 
-                        />
-                    </div>
+                <p style={{marginBottom: '20px'}}>{otpSent ? `Confirm code sent to ${formData.email}` : "Create an account to improve your city"}</p>
+                {!otpSent ? (
+                    <form onSubmit={handleRequestOtp}>
+                        <div style={styles.inputGroup}>
+                            <label style={styles.label}>Full Name</label>
+                            <input 
+                                type="text" name="name" style={styles.input} placeholder="John Doe"
+                                onChange={handleChange} required 
+                            />
+                        </div>
 
-                    <div style={styles.inputGroup}>
-                        <label style={styles.label}>Email Address</label>
-                        <input 
-                            type="email" name="email" style={styles.input} placeholder="name@gmail.com"
-                            onChange={handleChange} required 
-                        />
-                    </div>
+                        <div style={styles.inputGroup}>
+                            <label style={styles.label}>Email Address</label>
+                            <input 
+                                type="email" name="email" style={styles.input} placeholder="name@gmail.com"
+                                onChange={handleChange} required 
+                            />
+                        </div>
 
-                    <div style={styles.inputGroup}>
-                        <label style={styles.label}>Password</label>
-                        <input 
-                            type="password" name="password" style={styles.input} placeholder="Min. 8 characters"
-                            onChange={handleChange} required 
-                        />
-                    </div>
+                        <div style={styles.inputGroup}>
+                            <label style={styles.label}>Password</label>
+                            <input 
+                                type="password" name="password" style={styles.input} placeholder="Min. 8 characters"
+                                onChange={handleChange} required 
+                            />
+                        </div>
 
-                    <button type="submit" style={styles.button}>Create Account</button>
-                </form>
+                        <button type="submit" style={styles.button}>{isLoading ? "SENDING CODE..." : "Get Verification Code"}</button>
+                    </form>
+                ):(
+                    <form onSubmit={handleVerifyAndSignup}>
+                        <div style={styles.inputGroup}>
+                            <label style={styles.label}>Enter 6-Digit OTP</label>
+                            <input 
+                                type="text" name="otp" maxLength="6" style={{ ...styles.input, textAlign: 'center', fontSize: '1.3rem', letterSpacing: '4px' }} placeholder="123456"
+                                onChange={handleChange} required 
+                            />
+                        </div>
+
+                        <button type="submit" disabled={isLoading} style={styles.button}>
+                            {isLoading ? "VERIFYING..." : "Complete Sign Up 🎉"}
+                        </button>
+
+                    </form>
+                )}
 
                 <p style={styles.footerText}>
                     Already have an account? <Link to="/login" style={styles.link}>Log In</Link>
