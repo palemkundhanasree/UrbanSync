@@ -22,6 +22,18 @@ const userSchema = new mongoose.Schema({
     createdAt: {    
         type: Date,
         default: Date.now
+    },
+        resetOTP: {
+        type: String
+    },
+
+    resetOTPExpiry: {
+        type: Date
+    },
+
+    otpVerified: {
+        type: Boolean,
+        default: false
     }
 });
 

@@ -7,6 +7,7 @@ import AboutUs from "./components/Aboutus";
 import HowItWorks from "./components/Howitswork";
 import CitizenDashboard from "./components/CitizenDashbord";
 import OfficialDashbord from "./components/OfficialDashboard";
+import ForgotPassword from "./components/ForgotPassword";
 
 const router = createBrowserRouter([
   {
@@ -40,6 +41,10 @@ const router = createBrowserRouter([
       {
         path: "/official-dashboard",
         element: <OfficialDashbord />
+      },
+      {
+        path: "/forgot-password",
+        element: <ForgotPassword />
       }
     ]
   }
