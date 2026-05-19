@@ -158,35 +158,6 @@ function Signup() {
         }
     };
 
-    // const handleSignup =  async (e) => {
-    //     e.preventDefault();
-    //     console.log("Creating account for:", formData);
-    //     // Backend API call
-    //     try{
-    //         if(formData.password.length <= 8){
-    //             alert("Password must be at least 8 characters long.");
-    //             return;
-    //         }
-
-    //         const response = await fetch(`${API_BASE}/api/auth/signup`, {
-    //             method: 'POST',
-    //             headers: { 'Content-Type': 'application/json' },
-    //             body: JSON.stringify(formData),
-    //         });
-    //         const data= await response.json();
-            
-    //         if(response.ok){
-    //             alert("Account created successfully! Please log in.");
-    //             window.location.href="/login";
-    //         } else {
-    //             alert(data.message || "Failed to create account. Please try again.");
-    //         }
-    //     }
-    //     catch (error) {
-    //         console.error("Error creating account:", error);
-    //         alert("Failed to create account. Please try again.");
-    //     }
-    // };
 
     return (
         <div style={styles.container}>
@@ -229,7 +200,7 @@ function Signup() {
                                 type="text" name="otp" maxLength="6" style={{ ...styles.input, textAlign: 'center', fontSize: '1.3rem', letterSpacing: '4px' }} placeholder="123456"
                                 onChange={handleChange} required 
                             />
-                        </div>
+                        </div>x 
 
                         <button type="submit" disabled={isLoading} style={styles.button}>
                             {isLoading ? "VERIFYING..." : "Complete Sign Up 🎉"}
