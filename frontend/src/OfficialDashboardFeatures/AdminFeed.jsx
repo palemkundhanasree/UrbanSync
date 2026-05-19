@@ -130,7 +130,7 @@ const AdminFeed = ({ reports, onStatusChange }) => {
                             {report.description || report.category.toLowerCase()}
                         </p>
                         <p style={{ margin: 0, color: "#f3e8d3", fontSize: "0.75rem", opacity: 0.7, lineHeight: "1.4" }}>
-                            {report.address}, Tirupati (Urban), Tirupati, Andhra Pradesh, 517503, India
+                            {report.address}
                         </p>
                     </div>
 
