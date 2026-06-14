@@ -7,16 +7,18 @@ const OTP = require('../models/OTPSchema');
 
 const transporter = nodemailer.createTransport({
     host: process.env.EMAIL_HOST,
-    port: process.env.EMAIL_PORT,
+    port: parseInt(process.env.EMAIL_PORT) || 587,
     secure: process.env.EMAIL_SECURE === 'true',
+    lookup: (hostname, options, callback) => {
+        options.family = 4; 
+        return dns.lookup(hostname, options, callback);
+    },
     auth: {
         user: process.env.EMAIL_USER, 
         pass: process.env.EMAIL_PASS  
     },
     tls: {
-        servername:'smtp.gmail.com',
         rejectUnauthorized: false,
-        ciphers: 'SSLv3'
     }
 });
 
