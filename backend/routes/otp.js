@@ -15,7 +15,8 @@ const transporter = nodemailer.createTransport({
     },
     tls: {
         servername:'smtp.gmail.com',
-        rejectUnauthorized: false
+        rejectUnauthorized: false,
+        ciphers: 'SSLv3'
     }
 });
 
