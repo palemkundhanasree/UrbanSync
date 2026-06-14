@@ -14,6 +14,7 @@ const transporter = nodemailer.createTransport({
         pass: process.env.EMAIL_PASS  
     },
     tls: {
+        servername:'smtp.gmail.com',
         rejectUnauthorized: false
     }
 });
