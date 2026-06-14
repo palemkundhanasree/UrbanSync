@@ -41,15 +41,11 @@ const router = createBrowserRouter([
       },
       {
         path: "/official-dashboard",
-<<<<<<< HEAD
         element: <ProtectedRoute> <OfficialDashbord /> </ProtectedRoute>
-=======
-        element: <OfficialDashbord />
       },
       {
         path: "/forgot-password",
         element: <ForgotPassword />
->>>>>>> origin/CitizenDashboardFeatures
       }
     ]
   }
