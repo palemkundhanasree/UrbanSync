@@ -168,7 +168,7 @@ function Login() {
                         Forgot Password?
                     </p>
                     <button type="submit" style={styles.button} onClick={handleLogin}>
-                        LogIn
+                        Log In
                     </button>
                 </form>
 
