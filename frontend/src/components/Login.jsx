@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 
 function Login() {
 
@@ -10,6 +11,7 @@ function Login() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [role, setRole] = useState('citizen');
+    const navigate = useNavigate();
 
     const styles = {
         container: {
@@ -85,7 +87,7 @@ function Login() {
 
     const handleLogin = async (e) => {
         e.preventDefault();
-        console.log("Logging in as:", role,name, email);
+        console.log("Logging in as:", role, email);
         //  Backend API call 
         try{
             const response = await fetch(`${API_BASE}/api/auth/login`, {
@@ -154,9 +156,19 @@ function Login() {
                             required 
                         />
                     </div>
-
-                    <button type="submit" style={styles.button}>
-                        Log In
+                    <p
+                        style={{
+                            color: "#baf087",
+                            cursor: "pointer",
+                            marginTop: "10px",
+                            textAlign: "right"
+                        }}
+                        onClick={() => navigate("/forgot-password")}
+                        >
+                        Forgot Password?
+                    </p>
+                    <button type="submit" style={styles.button} onClick={handleLogin}>
+                        LogIn
                     </button>
                 </form>
 
